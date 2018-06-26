@@ -1,6 +1,16 @@
 {
   "extends": ["tslint:recommended"],
+  "rulesDirectory": ["tslint-plugin-prettier"],
   "rules": {
+    "prettier": [
+      true,
+      {
+        "trailingComma": "all",
+        "arrowParens": "always"
+      }
+    ],
+    "object-literal-sort-keys": false,
+    "no-console": false
   },
   "defaultSeverity": "warning"
 }

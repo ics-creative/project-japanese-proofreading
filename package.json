@@ -1,13 +1,29 @@
 {
     "name": "japanese-proofreading",
     "displayName": "テキスト校正くん",
-    "description": "",
-    "version": "0.0.1",
+    "description": "VSCode上でテキストファイルまたはMarkdownファイルの日本語の文章をチェックする拡張機能です。",
+    "version": "0.1.0",
     "publisher": "ICS",
     "engines": {
-        "vscode": "^1.24.0"
+        "vscode": "^1.0.0"
+    },
+    "icon": "images/icon-128.png",
+    "galleryBanner": {
+        "color": "#03A9F4",
+        "theme": "dark"
+    },
+    "license": "SEE LICENSE IN LICENSE.txt",
+    "homepage": "https://github.com/ics-creative/project-japanese-proofreading/blob/master/README.md",
+    "bugs": {
+        "url": "https://github.com/ics-creative/project-japanese-proofreading/issues",
+        "email": "maya.watanabe@ics-web.jp"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ics-creative/project-japanese-proofreading.git"
     },
     "categories": [
+        "Linters",
         "Other"
     ],
     "activationEvents": [
@@ -55,6 +71,7 @@
         "@types/mocha": "^2.2.42"
     },
     "dependencies": {
+        "debug": "^3.1.0",
         "textlint": "^10.2.1",
         "textlint-rule-max-ten": "^2.0.3",
         "textlint-rule-no-mix-dearu-desumasu": "^3.0.3",

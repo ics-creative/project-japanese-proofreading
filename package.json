@@ -61,6 +61,7 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "format": "tslint -c tslint.json 'src/**/*.ts' --fix",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "npm run compile && node ./node_modules/vscode/bin/test"
   },

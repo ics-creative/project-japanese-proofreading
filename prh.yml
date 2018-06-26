@@ -1,0 +1,119 @@
+version: 1
+
+# もし、もっと別なルールを使いたい時は以下のURLを参照して真似してください。
+# https://github.com/vvakame/prh/tree/master/misc
+# おすすめは techbooster.yml です。
+
+# 別の設定ファイルを読み込み、mergeすることもできます。
+imports:
+  # - ./techbooster.yml
+
+rules:
+
+  # 変換結果が期待通りではなかった場合、ルールのロードに失敗する つまり、ルールのテストが書ける
+  # - expected: JavaScript
+  #   specs:
+  #     - from: JAVASCRIPT
+  #       to:   JavaScprit # この場合はテスト側が間違ってる！
+  # Error: JavaScript spec failed. "JAVASCRIPT", expected "JavaScprit", but got "JavaScript", /[JjＪｊ][AaＡａ][VvＶｖ][AaＡａ][SsＳｓ][CcＣｃ][RrＲｒ][IiＩｉ][PpＰｐ][TtＴｔ]/g
+
+  # 表現の統一を図る
+  - expected: デフォルト
+    pattern:  ディフォルト
+
+  # patternは複数記述可能 patterns としてもOK
+  - expected: ハードウェアー
+    patterns:
+      - ハードウエアー # 正規表現に変換する都合上、より長いものを先に書いたほうがよい
+      - ハードウェア
+      - ハードウエア
+
+  # patternには正規表現が利用可能
+  - expected: （$1）
+    pattern:  /\(([^)]+)\)/
+    specs:
+      # 半角括弧を全角括弧へ
+      - from: (そのとおり)
+        to:   （そのとおり）
+
+  # 否定戻り先読みが欲しいがJSにはない… regexpMustEmptyで、特定のキャプチャグループが空であることを指定して代用とする
+  - expected: ソフトウェア
+    pattern:  /(日経)?ソフトウエア/
+    regexpMustEmpty: $1
+    specs:
+      # 普通に変換
+      - from: 広義のソフトウエア
+        to:   広義のソフトウェア
+      # 日経ソフトウエア(書名)は変換しない
+      - from: 日経ソフトウエア
+        to:   日経ソフトウエア
+
+  # 冗長な表現
+  - expected: します（冗長な表現ではないでしょうか？）
+    patters:
+      - していきます
+			
+  # 冗長な表現
+  - expected: "冗長な表現ではないでしょうか？"
+    patterns: 
+      - することが
+
+  # 冗長な表現
+  - expected: （冗長な表現ではないでしょうか？）
+    patterns:
+      - なってしまって
+			
+  # 冗長な表現
+  - expected: （冗長な表現ではないでしょうか？）
+    patterns:
+      - なったり
+			
+  # 冗長な表現
+  - expected: （敬語は不要）
+    patterns:
+      - おります
+
+  #  誤用
+  - expected: ハードルが高い 等（誤用の可能性があります。また、誤用自信も広まっているため、あまり使用しないほうが良いでしょう）
+    patterns:
+      - 敷居が高い
+
+
+  # 誤字修正
+  - expected: GitHub
+    patterns:
+      - Github
+      - github
+      - GitHbu
+
+
+  # 誤字修正
+  - expected: Bootstrap 4
+    patterns:
+      - Bootstrap4
+
+
+  # 誤字修正
+  - expected: Gulp
+    patterns:
+      - Gupl
+
+
+  # 誤字修正
+  - expected: float
+    patterns:
+      - flaot
+      - folat
+
+
+  # 誤字修正
+  - expected: Node.js
+    patterns:
+      - Node.JS
+      - NodeJS
+
+
+  # 誤字修正
+  - expected: PhpStorm
+    patterns:
+      - PHPStorm

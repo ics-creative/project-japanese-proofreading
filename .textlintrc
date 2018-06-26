@@ -1,0 +1,14 @@
+{
+  "filters": {},
+  "rules": {
+    "max-ten": {
+        "max" : 3
+    },
+    "no-mix-dearu-desumasu": true,
+    "preset-japanese": true,
+    "preset-jtf-style": true,
+    "prh": {
+        "rulePaths" :["./prh.yml"]
+    }
+  }
+}

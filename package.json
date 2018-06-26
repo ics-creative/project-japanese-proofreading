@@ -1,86 +1,86 @@
 {
-    "name": "japanese-proofreading",
-    "displayName": "テキスト校正くん",
-    "description": "VSCode上でテキストファイルまたはMarkdownファイルの日本語の文章をチェックする拡張機能です。",
-    "version": "0.1.0",
-    "publisher": "ICS",
-    "engines": {
-        "vscode": "^1.0.0"
-    },
-    "icon": "images/icon-128.png",
-    "galleryBanner": {
-        "color": "#03A9F4",
-        "theme": "dark"
-    },
-    "license": "SEE LICENSE IN LICENSE.txt",
-    "homepage": "https://github.com/ics-creative/project-japanese-proofreading/blob/master/README.md",
-    "bugs": {
-        "url": "https://github.com/ics-creative/project-japanese-proofreading/issues",
-        "email": "maya.watanabe@ics-web.jp"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ics-creative/project-japanese-proofreading.git"
-    },
-    "categories": [
-        "Linters",
-        "Other"
-    ],
-    "activationEvents": [
-        "onLanguage:markdown",
-        "onLanguage:plaintext"
-    ],
-    "main": "./out/extension",
-    "contributes": {
-        "configuration": {
-            "type": "object",
-            "title": "textlint configuration",
-            "properties": {
-                "textlintConfig.maxNumberOfProblems": {
-                    "scope": "resource",
-                    "type": "number",
-                    "default": 100,
-                    "description": "Controls the maximum number of problems produced by the server."
-                },
-                "textlintConfig.trace.server": {
-                    "scope": "window",
-                    "type": "string",
-                    "enum": [
-                        "off",
-                        "messages",
-                        "verbose"
-                    ],
-                    "default": "off",
-                    "description": "Traces the communication between VSCode and the language server."
-                }
-            }
+  "name": "japanese-proofreading",
+  "displayName": "テキスト校正くん",
+  "description": "VSCode上でテキストファイルまたはMarkdownファイルの日本語の文章をチェックする拡張機能です。",
+  "version": "0.1.0",
+  "publisher": "ICS",
+  "engines": {
+    "vscode": "^1.0.0"
+  },
+  "icon": "images/icon-128.png",
+  "galleryBanner": {
+    "color": "#03A9F4",
+    "theme": "dark"
+  },
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "homepage": "https://github.com/ics-creative/project-japanese-proofreading/blob/master/README.md",
+  "bugs": {
+    "url": "https://github.com/ics-creative/project-japanese-proofreading/issues",
+    "email": "maya.watanabe@ics-web.jp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ics-creative/project-japanese-proofreading.git"
+  },
+  "categories": [
+    "Linters",
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:markdown",
+    "onLanguage:plaintext"
+  ],
+  "main": "./out/extension",
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "textlint configuration",
+      "properties": {
+        "textlintConfig.maxNumberOfProblems": {
+          "scope": "resource",
+          "type": "number",
+          "default": 100,
+          "description": "Controls the maximum number of problems produced by the server."
+        },
+        "textlintConfig.trace.server": {
+          "scope": "window",
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VSCode and the language server."
         }
-    },
-    "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "lint": "tslint -c tslint.json 'src/**/*.ts'",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "npm run compile && node ./node_modules/vscode/bin/test"
-    },
-    "devDependencies": {
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.6",
-        "tslint": "^5.8.0",
-        "@types/node": "^7.0.43",
-        "@types/mocha": "^2.2.42"
-    },
-    "dependencies": {
-        "debug": "^3.1.0",
-        "textlint": "^10.2.1",
-        "textlint-rule-max-ten": "^2.0.3",
-        "textlint-rule-no-mix-dearu-desumasu": "^3.0.3",
-        "textlint-rule-preset-japanese": "^4.0.0",
-        "textlint-rule-preset-jtf-style": "^2.3.1",
-        "textlint-rule-prh": "^5.0.1",
-        "vscode-languageclient": "^4.2.1",
-        "vscode-languageserver": "^4.2.1",
-        "vscode-uri": "^1.0.5"
+      }
     }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "typescript": "^2.6.1",
+    "vscode": "^1.1.6",
+    "tslint": "^5.8.0",
+    "@types/node": "^7.0.43",
+    "@types/mocha": "^2.2.42"
+  },
+  "dependencies": {
+    "debug": "^3.1.0",
+    "textlint": "^10.2.1",
+    "textlint-rule-max-ten": "^2.0.3",
+    "textlint-rule-no-mix-dearu-desumasu": "^3.0.3",
+    "textlint-rule-preset-japanese": "^4.0.0",
+    "textlint-rule-preset-jtf-style": "^2.3.1",
+    "textlint-rule-prh": "^5.0.1",
+    "vscode-languageclient": "^4.2.1",
+    "vscode-languageserver": "^4.2.1",
+    "vscode-uri": "^1.0.5"
+  }
 }

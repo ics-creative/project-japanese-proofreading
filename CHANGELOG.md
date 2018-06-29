@@ -1,7 +1,8 @@
 # Change Log
-All notable changes to the "textlint-ics" extension will be documented in this file.
+All notable changes to the "テキスト校正くん" extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## 0.1.1（2018.06.29）
+- 校正ルール等を調整
 
-## [Unreleased]
-- Initial release
+## 0.1.0（2018.06.26）
+- 初版リリース

@@ -80,8 +80,9 @@ function getDocumentSettings(resource: string): Thenable<ITextlintSettings> {
 }
 
 // Only keep settings for open documents
-documents.onDidClose((e) => {
-  documentSettings.delete(e.document.uri);
+documents.onDidClose((close) => {
+  documentSettings.delete(close.document.uri);
+  resetTextDocument(close.document);
 });
 
 // ドキュメントを初めて開いた時と内容に変更があった際に実行します。
@@ -132,6 +133,15 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
   }
 
   // Send the computed diagnostics to VSCode.
+  connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+}
+
+/**
+ * validate済みの内容を破棄します。
+ * @param textDocument
+ */
+async function resetTextDocument(textDocument: TextDocument): Promise<void> {
+  const diagnostics: Diagnostic[] = [];
   connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 }
 

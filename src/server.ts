@@ -120,7 +120,7 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
         severity: toDiagnosticSeverity(message.severity),
         range: Range.create(pos, pos),
         message: text,
-        source: "japanese-proofreading",
+        source: "テキスト校正くん",
         code: message.ruleId,
       };
       diagnostics.push(diagnostic);

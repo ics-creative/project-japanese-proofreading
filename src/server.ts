@@ -21,10 +21,9 @@ const connection = createConnection(ProposedFeatures.all);
 // テキストドキュメントを管理するクラスを作成します。
 const documents: TextDocuments = new TextDocuments();
 
-let hasConfigurationCapability: boolean | undefined = false;
+let hasConfigurationCapability: boolean = false;
 
 connection.onInitialize((params: InitializeParams) => {
-  console.log("initialize");
   const capabilities = params.capabilities;
   hasConfigurationCapability =
     capabilities.workspace && !!capabilities.workspace.configuration;
@@ -40,7 +39,6 @@ connection.onInitialize((params: InitializeParams) => {
 });
 
 connection.onInitialized(() => {
-  console.log("initialized");
   if (hasConfigurationCapability) {
     connection.client.register(
       DidChangeConfigurationNotification.type,
@@ -54,7 +52,6 @@ let globalSettings: ITextlintSettings = defaultSettings;
 const documentSettings: Map<string, Thenable<ITextlintSettings>> = new Map();
 
 connection.onDidChangeConfiguration((change) => {
-  console.log("onDidChangeConfiguration");
   if (hasConfigurationCapability) {
     // Reset all cached document settings
     documentSettings.clear();
@@ -101,8 +98,6 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
   const ext: string = path.extname(
     vscode_uri.default.parse(textDocument.uri).fsPath,
   );
-
-  console.log("validate!!");
 
   const engine: TextLintEngine = new TextLintEngine({
     configFile: path.resolve(__dirname, "../.textlintrc"),

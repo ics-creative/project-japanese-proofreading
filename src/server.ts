@@ -113,9 +113,7 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
     const l: number = messages.length;
     for (let i: number = 0; i < l; i++) {
       const message: TextlintMessage = messages[i];
-      const text: string = message.ruleId
-        ? `${message.message} (${message.ruleId})`
-        : message.message;
+      const text: string = message.message;
       const pos: Position = Position.create(
         Math.max(0, message.line - 1),
         Math.max(0, message.column - 1),

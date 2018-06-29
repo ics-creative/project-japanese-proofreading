@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "publisher": "ICS",
   "engines": {
-    "vscode": "^1.0.0"
+    "vscode": "^1.20.0"
   },
   "icon": "images/icon-128.png",
   "galleryBanner": {

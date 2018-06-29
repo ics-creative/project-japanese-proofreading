@@ -31,9 +31,6 @@ connection.onInitialize((params: InitializeParams) => {
   return {
     capabilities: {
       textDocumentSync: documents.syncKind,
-      completionProvider: {
-        resolveProvider: true,
-      },
     },
   };
 });
@@ -154,9 +151,6 @@ function toDiagnosticSeverity(severity) {
   }
   return DiagnosticSeverity.Information;
 }
-
-// 未定義の場合、文字入力時にエラーが発生する
-connection.onCompletion(() => []);
 
 // Make the text document manager listen on the connection
 // for open, change and close text document events

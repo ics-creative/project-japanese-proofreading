@@ -32,8 +32,8 @@ export function activate(context: ExtensionContext) {
     },
   };
   client = new LanguageClient(
-    "languageServerExample",
-    "Language Server Example",
+    "languageServerTextlint",
+    "Language Server Textlint",
     serverOptions,
     clientOptions,
   );

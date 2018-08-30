@@ -21,10 +21,9 @@ const connection = createConnection(ProposedFeatures.all);
 // テキストドキュメントを管理するクラスを作成します。
 const documents: TextDocuments = new TextDocuments();
 
-let hasConfigurationCapability: boolean | undefined = false;
+let hasConfigurationCapability: boolean = false;
 
 connection.onInitialize((params: InitializeParams) => {
-  console.log("initialize");
   const capabilities = params.capabilities;
   hasConfigurationCapability =
     capabilities.workspace && !!capabilities.workspace.configuration;
@@ -32,15 +31,11 @@ connection.onInitialize((params: InitializeParams) => {
   return {
     capabilities: {
       textDocumentSync: documents.syncKind,
-      completionProvider: {
-        resolveProvider: true,
-      },
     },
   };
 });
 
 connection.onInitialized(() => {
-  console.log("initialized");
   if (hasConfigurationCapability) {
     connection.client.register(
       DidChangeConfigurationNotification.type,
@@ -54,7 +49,6 @@ let globalSettings: ITextlintSettings = defaultSettings;
 const documentSettings: Map<string, Thenable<ITextlintSettings>> = new Map();
 
 connection.onDidChangeConfiguration((change) => {
-  console.log("onDidChangeConfiguration");
   if (hasConfigurationCapability) {
     // Reset all cached document settings
     documentSettings.clear();
@@ -83,8 +77,9 @@ function getDocumentSettings(resource: string): Thenable<ITextlintSettings> {
 }
 
 // Only keep settings for open documents
-documents.onDidClose((e) => {
-  documentSettings.delete(e.document.uri);
+documents.onDidClose((close) => {
+  documentSettings.delete(close.document.uri);
+  resetTextDocument(close.document);
 });
 
 // ドキュメントを初めて開いた時と内容に変更があった際に実行します。
@@ -102,8 +97,6 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
     vscode_uri.default.parse(textDocument.uri).fsPath,
   );
 
-  console.log("validate!!");
-
   const engine: TextLintEngine = new TextLintEngine({
     configFile: path.resolve(__dirname, "../.textlintrc"),
   });
@@ -117,9 +110,7 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
     const l: number = messages.length;
     for (let i: number = 0; i < l; i++) {
       const message: TextlintMessage = messages[i];
-      const text: string = message.ruleId
-        ? `${message.message} (${message.ruleId})`
-        : message.message;
+      const text: string = message.message;
       const pos: Position = Position.create(
         Math.max(0, message.line - 1),
         Math.max(0, message.column - 1),
@@ -129,7 +120,7 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
         severity: toDiagnosticSeverity(message.severity),
         range: Range.create(pos, pos),
         message: text,
-        source: "japanese-proofreading",
+        source: "テキスト校正くん",
         code: message.ruleId,
       };
       diagnostics.push(diagnostic);
@@ -137,6 +128,15 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
   }
 
   // Send the computed diagnostics to VSCode.
+  connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+}
+
+/**
+ * validate済みの内容を破棄します。
+ * @param textDocument
+ */
+async function resetTextDocument(textDocument: TextDocument): Promise<void> {
+  const diagnostics: Diagnostic[] = [];
   connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 }
 

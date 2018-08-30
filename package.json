@@ -7,7 +7,7 @@
   "engines": {
     "vscode": "^1.25.0"
   },
-  "icon": "images/icon-128.png",
+  "icon": "images/icon.png",
   "galleryBanner": {
     "color": "#03A9F4",
     "theme": "dark"

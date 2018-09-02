@@ -28,7 +28,8 @@
   ],
   "activationEvents": [
     "onLanguage:markdown",
-    "onLanguage:plaintext"
+    "onLanguage:plaintext",
+    "onLanguage:restructuredtext"
   ],
   "main": "./out/extension",
   "contributes": {

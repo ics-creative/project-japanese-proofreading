@@ -63,7 +63,8 @@
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "format": "tslint -c tslint.json 'src/**/*.ts' --fix",
     "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    "test": "npm run compile && node ./node_modules/vscode/bin/test",
+    "update-dictionary": "npm uninstall textlint-rule-preset-icsmedia && npm i ics-creative/textlint-rule-preset-icsmedia"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.3",
@@ -79,7 +80,7 @@
     "textlint": "^10.2.1",
     "textlint-rule-max-ten": "^2.0.3",
     "textlint-rule-no-mix-dearu-desumasu": "^3.0.3",
-    "textlint-rule-preset-icsmedia": "ics-creative/textlint-rule-preset-icsmedia",
+    "textlint-rule-preset-icsmedia": "github:ics-creative/textlint-rule-preset-icsmedia",
     "textlint-rule-preset-japanese": "^4.0.0",
     "textlint-rule-preset-jtf-style": "^2.3.1",
     "textlint-rule-prh": "^5.0.1",

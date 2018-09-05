@@ -1,13 +1,19 @@
 {
   "filters": {},
   "rules": {
-    "max-ten": {
-      "max": 3
-    },
     "no-mix-dearu-desumasu": true,
+    "no-doubled-joshi": {
+      "min_interval" : 1,
+      "strict": false,
+      "allow": ["も", "や", "か"],
+      "separatorChars": ["、", "。", "?", "!", "？", "！"]
+    },
     "preset-japanese": {
       "sentence-length": {
         "max": 150
+      },
+      "max-ten": {
+        "max": 4
       }
     },
     "preset-jtf-style": {

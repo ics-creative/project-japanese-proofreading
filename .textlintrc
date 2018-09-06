@@ -4,7 +4,7 @@
     "no-mix-dearu-desumasu": true,
     "preset-japanese": {
       "sentence-length": {
-        "max": 150,
+        "max": 150
       },
       "max-ten": {
         "max": 4
@@ -13,7 +13,7 @@
         "min_interval" : 1,
         "strict": false,
         "allow": ["も", "や", "か"],
-        "separatorChars": ["、", "。", "?", "!", "？", "！", "「",  "」", "“", "”", ]
+        "separatorChars": ["、", "。", "?", "!", "？", "！", "「",  "」", "“", "”"]
       },
     },
     "preset-jtf-style": {

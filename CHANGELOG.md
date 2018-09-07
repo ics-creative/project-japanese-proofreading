@@ -2,6 +2,11 @@
 
 All notable changes to the "テキスト校正くん" extension will be documented in this file.
 
+## 0.1.5（2018.09.07）
+
+- 校正ルール等を調整
+- 半角丸括弧を許容
+
 ## 0.1.4（2018.09.06）
 
 - 校正ルール等を調整

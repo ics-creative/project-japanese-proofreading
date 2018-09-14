@@ -2,7 +2,7 @@
   "name": "japanese-proofreading",
   "displayName": "テキスト校正くん",
   "description": "VS CodeでテキストファイルやMarkdownファイルの日本語の文章をチェックする拡張機能",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "publisher": "ICS",
   "engines": {
     "vscode": "^1.25.0"
@@ -34,15 +34,15 @@
   "contributes": {
     "configuration": {
       "type": "object",
-      "title": "textlint configuration",
+      "title": "テキスト校正くん",
       "properties": {
-        "textlintConfig.maxNumberOfProblems": {
+        "japaneseProofreading.maxNumberOfProblems": {
           "scope": "resource",
           "type": "number",
           "default": 100,
-          "description": "Controls the maximum number of problems produced by the server."
+          "description": "校正チェックを行う、1ドキュメント辺りの最大指摘数です。"
         },
-        "textlintConfig.trace.server": {
+        "japaneseProofreading.trace.server": {
           "scope": "window",
           "type": "string",
           "enum": [
@@ -51,7 +51,42 @@
             "verbose"
           ],
           "default": "off",
-          "description": "Traces the communication between VSCode and the language server."
+          "description": "VS Codeと言語サーバー間通信のトレース設定です。"
+        },
+        "japaneseProofreading.textlint.rule01": {
+          "type": "boolean",
+          "default": true,
+          "description": "ら抜き言葉のチェックを行います。"
+        },
+        "japaneseProofreading.textlint.rule02": {
+          "type": "boolean",
+          "default": true,
+          "description": "1.2.2.ピリオド(.)とカンマ(,)"
+        },
+        "japaneseProofreading.textlint.rule03": {
+          "type": "boolean",
+          "default": true,
+          "description": "2.1.8.算用数字"
+        },
+        "japaneseProofreading.textlint.rule04": {
+          "type": "boolean",
+          "default": true,
+          "description": "3.1.2.全角文字どうし"
+        },
+        "japaneseProofreading.textlint.rule05": {
+          "type": "boolean",
+          "default": true,
+          "description": "4.3.1.丸かっこ（）"
+        },
+        "japaneseProofreading.textlint.rule06": {
+          "type": "boolean",
+          "default": true,
+          "description": "4.3.3.かぎかっこ「」"
+        },
+        "japaneseProofreading.textlint.rule07": {
+          "type": "boolean",
+          "default": true,
+          "description": "no-mix-dearu-desumasu"
         }
       }
     }

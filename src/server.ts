@@ -24,6 +24,7 @@ const documents: TextDocuments = new TextDocuments();
 let hasConfigurationCapability: boolean = false;
 
 connection.onInitialize((params: InitializeParams) => {
+  connection.console.log("s.initialize!!!");
   const capabilities = params.capabilities;
   hasConfigurationCapability =
     capabilities.workspace && !!capabilities.workspace.configuration;
@@ -36,6 +37,7 @@ connection.onInitialize((params: InitializeParams) => {
 });
 
 connection.onInitialized(() => {
+  connection.console.log("s.initialized!!!");
   if (hasConfigurationCapability) {
     connection.client.register(
       DidChangeConfigurationNotification.type,
@@ -44,16 +46,28 @@ connection.onInitialized(() => {
   }
 });
 
-const defaultSettings: ITextlintSettings = { maxNumberOfProblems: 1000 };
+const defaultSettings: ITextlintSettings = {
+  maxNumberOfProblems: 1000,
+  textlint: {
+    rule01: true,
+    rule02: true,
+    rule03: true,
+    rule04: true,
+    rule05: true,
+    rule06: true,
+    rule07: true,
+  },
+};
 let globalSettings: ITextlintSettings = defaultSettings;
 const documentSettings: Map<string, Thenable<ITextlintSettings>> = new Map();
 
 connection.onDidChangeConfiguration((change) => {
+  connection.console.log("s.didChanged!!!");
   if (hasConfigurationCapability) {
     // Reset all cached document settings
     documentSettings.clear();
   } else {
-    globalSettings = (change.settings.textlintConfig ||
+    globalSettings = (change.settings.japaneseProofreading ||
       defaultSettings) as ITextlintSettings;
   }
 
@@ -69,7 +83,7 @@ function getDocumentSettings(resource: string): Thenable<ITextlintSettings> {
   if (!result) {
     result = connection.workspace.getConfiguration({
       scopeUri: resource,
-      section: "textlintConfig",
+      section: "japaneseProofreading",
     });
     documentSettings.set(resource, result);
   }
@@ -89,6 +103,7 @@ documents.onDidChangeContent((change) => {
 
 // バリデーション（textlint）を実施
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
+  connection.console.log("s.validation!!!!!!");
   // In this simple example we get the settings for every validate run.
   const settings = await getDocumentSettings(textDocument.uri);
 
@@ -110,11 +125,16 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
     const l: number = messages.length;
     for (let i: number = 0; i < l; i++) {
       const message: TextlintMessage = messages[i];
-      const text: string = message.message;
+      const text: string = `${message.message}（${message.ruleId}）`;
       const pos: Position = Position.create(
         Math.max(0, message.line - 1),
         Math.max(0, message.column - 1),
       );
+
+      // 対象チェック
+      if (!isTarget(settings, message.ruleId)) {
+        continue;
+      }
 
       const diagnostic: Diagnostic = {
         severity: toDiagnosticSeverity(message.severity),
@@ -129,6 +149,37 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
 
   // Send the computed diagnostics to VSCode.
   connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+}
+
+function isTarget(settings: ITextlintSettings, ruleId: string): boolean {
+  let bool: boolean = false;
+  switch (ruleId) {
+    case "preset-japanese/no-dropping-the-ra":
+      bool = settings.textlint.rule01;
+      break;
+    case "preset-jtf-style/1.2.2.ピリオド(.)とカンマ(,)":
+      bool = settings.textlint.rule02;
+      break;
+    case "preset-jtf-style/2.1.8.算用数字":
+      bool = settings.textlint.rule03;
+      break;
+    case "preset-jtf-style/3.1.2.全角文字どうし":
+      bool = settings.textlint.rule04;
+      break;
+    case "preset-jtf-style/4.3.1.丸かっこ（）":
+      bool = settings.textlint.rule05;
+      break;
+    case "preset-jtf-style/4.3.3.かぎかっこ「」":
+      bool = settings.textlint.rule06;
+      break;
+    case "no-mix-dearu-desumasu":
+      bool = settings.textlint.rule07;
+      break;
+    default:
+      bool = true;
+      break;
+  }
+  return bool;
 }
 
 /**
@@ -161,4 +212,15 @@ connection.listen();
 
 interface ITextlintSettings {
   maxNumberOfProblems: number;
+  textlint: IRuleId;
+}
+
+interface IRuleId {
+  rule01: boolean;
+  rule02: boolean;
+  rule03: boolean;
+  rule04: boolean;
+  rule05: boolean;
+  rule06: boolean;
+  rule07: boolean;
 }

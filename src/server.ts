@@ -24,7 +24,6 @@ const documents: TextDocuments = new TextDocuments();
 let hasConfigurationCapability: boolean = false;
 
 connection.onInitialize((params: InitializeParams) => {
-  connection.console.log("s.initialize!!!");
   const capabilities = params.capabilities;
   hasConfigurationCapability =
     capabilities.workspace && !!capabilities.workspace.configuration;
@@ -37,7 +36,6 @@ connection.onInitialize((params: InitializeParams) => {
 });
 
 connection.onInitialized(() => {
-  connection.console.log("s.initialized!!!");
   if (hasConfigurationCapability) {
     connection.client.register(
       DidChangeConfigurationNotification.type,
@@ -62,7 +60,6 @@ let globalSettings: ITextlintSettings = defaultSettings;
 const documentSettings: Map<string, Thenable<ITextlintSettings>> = new Map();
 
 connection.onDidChangeConfiguration((change) => {
-  connection.console.log("s.didChanged!!!");
   if (hasConfigurationCapability) {
     // Reset all cached document settings
     documentSettings.clear();
@@ -103,7 +100,6 @@ documents.onDidChangeContent((change) => {
 
 // バリデーション（textlint）を実施
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
-  connection.console.log("s.validation!!!!!!");
   // In this simple example we get the settings for every validate run.
   const settings = await getDocumentSettings(textDocument.uri);
 

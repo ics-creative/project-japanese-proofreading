@@ -2,6 +2,11 @@
 
 All notable changes to the "テキスト校正くん" extension will be documented in this file.
 
+## 0.1.6（2018.09.14）
+
+- 校正ルールを調整
+- iPhone XS、iPhone XRなどを辞書に追加
+
 ## 0.1.5（2018.09.07）
 
 - 校正ルール等を調整

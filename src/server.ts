@@ -58,7 +58,7 @@ function getDefaultTextlintSettings() {
 
 const defaultSettings: ITextlintSettings = {
   maxNumberOfProblems: 1000,
-  textlint: getDefaultTextlintSettings()
+  textlint: getDefaultTextlintSettings(),
 };
 let globalSettings: ITextlintSettings = defaultSettings;
 const documentSettings: Map<string, Thenable<ITextlintSettings>> = new Map();
@@ -121,7 +121,6 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
 
   if (engine.isErrorResults(results)) {
     const messages: TextlintMessage[] = results[0].messages;
-
     const l: number = messages.length;
     for (let i: number = 0; i < l; i++) {
       const message: TextlintMessage = messages[i];
@@ -130,12 +129,10 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
         Math.max(0, message.line - 1),
         Math.max(0, message.column - 1),
       );
-
       // 対象チェック
       if (!isTarget(settings, message.ruleId, message.message)) {
         continue;
       }
-
       const diagnostic: Diagnostic = {
         severity: toDiagnosticSeverity(message.severity),
         range: Range.create(pos, pos),

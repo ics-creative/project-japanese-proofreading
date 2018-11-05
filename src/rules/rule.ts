@@ -120,5 +120,5 @@ export const rules: IRuleItem[] = [
     ruleName: "ら抜き言葉",
     ruleId: "preset-japanese/no-dropping-the-ra",
     enabled: true,
-  }
+  },
 ];

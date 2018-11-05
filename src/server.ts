@@ -132,7 +132,7 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
       );
 
       // 対象チェック
-      if (!isTarget(settings, message.ruleId)) {
+      if (!isTarget(settings, message.ruleId, message.message)) {
         continue;
       }
 
@@ -151,10 +151,20 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
   connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 }
 
-function isTarget(settings: ITextlintSettings, ruleId: string): boolean {
+function isTarget(
+  settings: ITextlintSettings,
+  ruleId: string,
+  message: string,
+): boolean {
   let bool: boolean = false;
   rules.forEach((element, index, array) => {
-    if (element.ruleId === ruleId) {
+    // prhのとき、ruleIdからprh内の細かいルールを取得できないのでmessageに含まれているか取得している
+    if (ruleId === "prh") {
+      const ruleIdSub = element.ruleId.split("/")[1];
+      if (message.includes(`（${ruleIdSub}）`)) {
+        bool = settings.textlint[element.ruleName];
+      }
+    } else if (element.ruleId === ruleId) {
       bool = settings.textlint[element.ruleName];
     }
   });

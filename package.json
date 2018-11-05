@@ -53,40 +53,116 @@
           "default": "off",
           "description": "VS Codeと言語サーバー間通信のトレース設定です。"
         },
-        "japaneseProofreading.textlint.rule01": {
+
+        "japaneseProofreading.textlint.誤字": {
           "type": "boolean",
           "default": true,
-          "description": "ら抜き言葉のチェックを行います。"
+          "description": "有効"
         },
-        "japaneseProofreading.textlint.rule02": {
+        "japaneseProofreading.textlint.重言": {
           "type": "boolean",
           "default": true,
-          "description": "1.2.2.ピリオド(.)とカンマ(,)"
+          "description": "有効"
         },
-        "japaneseProofreading.textlint.rule03": {
-          "type": "boolean",
-          "default": true,
-          "description": "2.1.8.算用数字"
+        "japaneseProofreading.textlint.ひらく漢字" : {  
+          "type" : "boolean",
+          "default" : true,
+          "description": "有効"
         },
-        "japaneseProofreading.textlint.rule04": {
-          "type": "boolean",
-          "default": true,
-          "description": "3.1.2.全角文字どうし"
+        "japaneseProofreading.textlint.冗長な表現" : {  
+          "type" : "boolean",
+          "default" : true,
+          "description": "有効"
         },
-        "japaneseProofreading.textlint.rule05": {
-          "type": "boolean",
-          "default": true,
-          "description": "4.3.1.丸かっこ（）"
+        "japaneseProofreading.textlint.外来語カタカナ表記" : {  
+          "type" : "boolean",
+          "default" : true,
+          "description": "有効"
         },
-        "japaneseProofreading.textlint.rule06": {
+        "japaneseProofreading.textlint.固有名詞" : {
           "type": "boolean",
           "default": true,
-          "description": "4.3.3.かぎかっこ「」"
+          "description": "有効"
         },
-        "japaneseProofreading.textlint.rule07": {
+        "japaneseProofreading.textlint.技術用語": {
           "type": "boolean",
           "default": true,
-          "description": "no-mix-dearu-desumasu"
+          "description": "有効"
+        },
+        "japaneseProofreading.textlint.読点の数": {
+          "type": "boolean",
+          "default": true,
+          "description": "一つの文で\"、\"を4つ以上使用している場合に指摘します。"
+        },
+        "japaneseProofreading.textlint.助詞の連続": {
+          "type": "boolean",
+          "default": true,
+          "description": "助詞の連続"
+        },
+        "japaneseProofreading.textlint.句点(。)と読点(、)": {
+          "type": "boolean",
+          "default": true,
+          "description": "有効"
+        },
+        "japaneseProofreading.textlint.算用数字": {
+          "type": "boolean",
+          "default": true,
+          "description": "有効"
+        },
+        "japaneseProofreading.textlint.アルファベット" : {  
+          "type" : "boolean",
+          "default" : true,
+          "description": "有効"
+        },
+        "japaneseProofreading.textlint.算用数字と漢数字の使い分け" : {  
+          "type" : "boolean",
+          "default" : true,
+          "description": "有効"
+        },
+        "japaneseProofreading.textlint.一部の助数詞の表記" : {  
+          "type" : "boolean",
+          "default" : true,
+          "description": "有効"
+        },
+        "japaneseProofreading.textlint.全角文字と半角文字の間" : {
+          "type": "boolean",
+          "default": true,
+          "description": "有効"
+        },
+        "japaneseProofreading.textlint.全角文字どうし": {
+          "type": "boolean",
+          "default": true,
+          "description": "有効"
+        },
+        "japaneseProofreading.textlint.かっこ類と隣接する文字の間のスペースの有無": {
+          "type": "boolean",
+          "default": true,
+          "description": "有効"
+        },
+        "japaneseProofreading.textlint.疑問符(？)": {
+          "type": "boolean",
+          "default": true,
+          "description": "有効"
+        },
+        "japaneseProofreading.textlint.ハイフン(-)": {
+          "type": "boolean",
+          "default": true,
+          "description": "有効"
+        },
+        "japaneseProofreading.textlint.ダッシュ(-)": {
+          "type": "boolean",
+          "default": true,
+          "description": "有効"
+        },
+        "japaneseProofreading.textlint.丸かっこ（）": {
+          "type": "boolean",
+          "default": true,
+          "description": "有効"
+        },
+        "japaneseProofreading.textlint.ら抜き言葉": {
+          "type": "boolean",
+          "default": true,
+          "description": "有効"
         }
       }
     }

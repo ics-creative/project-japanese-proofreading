@@ -1,6 +1,8 @@
 import { TextlintMessage, TextlintResult } from "@textlint/kernel";
 import * as path from "path";
 import { TextLintEngine } from "textlint";
+import { rules } from "./rules/rule";
+
 import {
   createConnection,
   Diagnostic,
@@ -44,17 +46,19 @@ connection.onInitialized(() => {
   }
 });
 
+function getDefaultTextlintSettings() {
+  const mySettings = new Map<string, boolean>();
+
+  rules.forEach((value, index, array) => {
+    mySettings[value.ruleName] = value.enabled;
+  });
+
+  return mySettings;
+}
+
 const defaultSettings: ITextlintSettings = {
   maxNumberOfProblems: 1000,
-  textlint: {
-    rule01: true,
-    rule02: true,
-    rule03: true,
-    rule04: true,
-    rule05: true,
-    rule06: true,
-    rule07: true,
-  },
+  textlint: getDefaultTextlintSettings()
 };
 let globalSettings: ITextlintSettings = defaultSettings;
 const documentSettings: Map<string, Thenable<ITextlintSettings>> = new Map();
@@ -149,32 +153,11 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
 
 function isTarget(settings: ITextlintSettings, ruleId: string): boolean {
   let bool: boolean = false;
-  switch (ruleId) {
-    case "preset-japanese/no-dropping-the-ra":
-      bool = settings.textlint.rule01;
-      break;
-    case "preset-jtf-style/1.2.2.ピリオド(.)とカンマ(,)":
-      bool = settings.textlint.rule02;
-      break;
-    case "preset-jtf-style/2.1.8.算用数字":
-      bool = settings.textlint.rule03;
-      break;
-    case "preset-jtf-style/3.1.2.全角文字どうし":
-      bool = settings.textlint.rule04;
-      break;
-    case "preset-jtf-style/4.3.1.丸かっこ（）":
-      bool = settings.textlint.rule05;
-      break;
-    case "preset-jtf-style/4.3.3.かぎかっこ「」":
-      bool = settings.textlint.rule06;
-      break;
-    case "no-mix-dearu-desumasu":
-      bool = settings.textlint.rule07;
-      break;
-    default:
-      bool = true;
-      break;
-  }
+  rules.forEach((element, index, array) => {
+    if (element.ruleId === ruleId) {
+      bool = settings.textlint[element.ruleName];
+    }
+  });
   return bool;
 }
 
@@ -208,15 +191,5 @@ connection.listen();
 
 interface ITextlintSettings {
   maxNumberOfProblems: number;
-  textlint: IRuleId;
-}
-
-interface IRuleId {
-  rule01: boolean;
-  rule02: boolean;
-  rule03: boolean;
-  rule04: boolean;
-  rule05: boolean;
-  rule06: boolean;
-  rule07: boolean;
+  textlint: Map<string, boolean>;
 }

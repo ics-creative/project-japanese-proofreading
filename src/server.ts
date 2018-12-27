@@ -68,7 +68,7 @@ connection.onDidChangeConfiguration((change) => {
     // Reset all cached document settings
     documentSettings.clear();
   } else {
-    globalSettings = (change.settings.japanese-proofreading ||
+    globalSettings = (change.settings["japanese-proofreading"] ||
       defaultSettings) as ITextlintSettings;
   }
 

@@ -57,112 +57,112 @@
         "japanese-proofreading.textlint.誤字": {
           "type": "boolean",
           "default": true,
-          "description": "有効"
+          "description": "有効（間違いやすい慣用表現をチェックします）"
         },
         "japanese-proofreading.textlint.重言": {
           "type": "boolean",
           "default": true,
-          "description": "有効"
+          "description": "有効（同じ意味の言葉を重ねていないかチェックします）"
         },
         "japanese-proofreading.textlint.ひらく漢字" : {  
           "type" : "boolean",
           "default" : true,
-          "description": "有効"
+          "description": "有効（漢字の閉じ開きをチェックします）"
         },
         "japanese-proofreading.textlint.冗長な表現" : {  
           "type" : "boolean",
           "default" : true,
-          "description": "有効"
+          "description": "有効（冗長な日本語表現がないかチェックします）"
         },
         "japanese-proofreading.textlint.外来語カタカナ表記" : {  
           "type" : "boolean",
           "default" : true,
-          "description": "有効"
+          "description": "有効（外来語カタカナ表記の語尾の長音表記をチェックします）"
         },
         "japanese-proofreading.textlint.固有名詞" : {
           "type": "boolean",
           "default": true,
-          "description": "有効"
+          "description": "有効（社名やブランド名などの固有名詞の表記をチェックします）"
         },
         "japanese-proofreading.textlint.技術用語": {
           "type": "boolean",
           "default": true,
-          "description": "有効"
+          "description": "有効（ウェブ技術に関する固有名詞の表記をチェックします）"
         },
         "japanese-proofreading.textlint.読点の数": {
           "type": "boolean",
           "default": true,
-          "description": "一つの文で\"、\"を4つ以上使用している場合に指摘します。"
+          "description": "有効（一つの文で\"、\"を4つ以上使用していないかチェックします）"
         },
         "japanese-proofreading.textlint.助詞の連続": {
           "type": "boolean",
           "default": true,
-          "description": "助詞の連続"
+          "description": "有効（同じ助詞を連続して使用していないかチェックします）"
         },
         "japanese-proofreading.textlint.句点(。)と読点(、)": {
           "type": "boolean",
           "default": true,
-          "description": "有効"
+          "description": "有効（和文の句読点にピリオドやカンマを使用していないかチェックします）"
         },
         "japanese-proofreading.textlint.算用数字": {
           "type": "boolean",
           "default": true,
-          "description": "有効"
+          "description": "有効（算用数字が半角で表記されているかチェックします）"
         },
         "japanese-proofreading.textlint.アルファベット" : {  
           "type" : "boolean",
           "default" : true,
-          "description": "有効"
+          "description": "有効（アルファベットが半角で表記されているかチェックします）"
         },
         "japanese-proofreading.textlint.算用数字と漢数字の使い分け" : {  
           "type" : "boolean",
           "default" : true,
-          "description": "有効"
+          "description": "有効（算用数字と漢数字の使い分けをチェックします）"
         },
         "japanese-proofreading.textlint.一部の助数詞の表記" : {  
           "type" : "boolean",
           "default" : true,
-          "description": "有効"
+          "description": "有効（助数詞にともなう「ヵ」「か」「カ」「ヶ」「ケ」「箇」「個」の表記で「か」を使用しているかチェックします。）"
         },
         "japanese-proofreading.textlint.全角文字と半角文字の間" : {
           "type": "boolean",
           "default": true,
-          "description": "有効"
+          "description": "有効（全角文字と半角文字の間にスペースを入れていないかチェックします）"
         },
         "japanese-proofreading.textlint.全角文字どうし": {
           "type": "boolean",
           "default": true,
-          "description": "有効"
+          "description": "有効（全角文字どうしの間にスペースを入れていないかをチェックします）"
         },
         "japanese-proofreading.textlint.かっこ類と隣接する文字の間のスペースの有無": {
           "type": "boolean",
           "default": true,
-          "description": "有効"
+          "description": "有効（かっこの外側、内側ともにスペースを入れていないかをチェックします）"
         },
         "japanese-proofreading.textlint.疑問符(？)": {
           "type": "boolean",
           "default": true,
-          "description": "有効"
+          "description": "有効（疑問符の後に別の文が続く場合、全角スペースが入っているかチェックします）"
         },
         "japanese-proofreading.textlint.ハイフン(-)": {
           "type": "boolean",
           "default": true,
-          "description": "有効"
+          "description": "有効（和文にハイフンを使用していないかチェックします）"
         },
         "japanese-proofreading.textlint.ダッシュ(-)": {
           "type": "boolean",
           "default": true,
-          "description": "有効"
+          "description": "有効（和文にダッシュを使用していないかチェックします）"
         },
         "japanese-proofreading.textlint.丸かっこ（）": {
           "type": "boolean",
           "default": true,
-          "description": "有効"
+          "description": "有効（半角の括弧を使用していないかチェックします）"
         },
         "japanese-proofreading.textlint.ら抜き言葉": {
           "type": "boolean",
           "default": true,
-          "description": "有効"
+          "description": "有効（ら抜き言葉をチェックします）"
         }
       }
     }

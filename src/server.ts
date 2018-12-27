@@ -68,7 +68,7 @@ connection.onDidChangeConfiguration((change) => {
     // Reset all cached document settings
     documentSettings.clear();
   } else {
-    globalSettings = (change.settings.japaneseProofreading ||
+    globalSettings = (change.settings.japanese-proofreading ||
       defaultSettings) as ITextlintSettings;
   }
 
@@ -84,7 +84,7 @@ function getDocumentSettings(resource: string): Thenable<ITextlintSettings> {
   if (!result) {
     result = connection.workspace.getConfiguration({
       scopeUri: resource,
-      section: "japaneseProofreading",
+      section: "japanese-proofreading",
     });
     documentSettings.set(resource, result);
   }

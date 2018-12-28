@@ -2,6 +2,10 @@
 
 All notable changes to the "テキスト校正くん" extension will be documented in this file.
 
+## 0.2.0（2018.12.28）
+
+- 設定画面から有効にする校正ルールを選択できるように変更
+
 ## 0.1.6（2018.09.14）
 
 - 校正ルールを調整

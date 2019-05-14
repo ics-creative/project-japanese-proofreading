@@ -2,7 +2,7 @@
   "name": "japanese-proofreading",
   "displayName": "テキスト校正くん",
   "description": "VS CodeでテキストファイルやMarkdownファイルの日本語の文章をチェックする拡張機能",
-  "version": "0.1.5",
+  "version": "0.2.1",
   "publisher": "ICS",
   "engines": {
     "vscode": "^1.25.0"
@@ -64,7 +64,8 @@
     "format": "tslint -c tslint.json 'src/**/*.ts' --fix",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "npm run compile && node ./node_modules/vscode/bin/test",
-    "update-dictionary": "npm uninstall textlint-rule-preset-icsmedia && npm i ics-creative/textlint-rule-preset-icsmedia"
+    "update-dictionary": "npm uninstall textlint-rule-preset-icsmedia && npm i ics-creative/textlint-rule-preset-icsmedia",
+    "vsce-package": "vsce package"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.3",

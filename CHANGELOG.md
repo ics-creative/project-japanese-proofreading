@@ -2,6 +2,16 @@
 
 All notable changes to the "テキスト校正くん" extension will be documented in this file.
 
+## 0.2.1（2019.05.14）
+
+- 校正辞書を追加
+  - TrueType/OpenType
+  - Amazon Web Services
+
+## 0.2.0（2018.12.28）
+
+- 校正ルールのカスタマイズ
+
 ## 0.1.5（2018.09.07）
 
 - 校正ルール等を調整

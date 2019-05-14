@@ -1,8 +1,8 @@
 # Change Log
 
-All notable changes to the "テキスト校正くん" extension will be documented in this file.
 
-## 0.2.1（2019.05.14）
+
+## 0.2.2（2019.05.14）
 
 - 校正辞書を追加
   - TrueType/OpenType
@@ -10,7 +10,12 @@ All notable changes to the "テキスト校正くん" extension will be document
 
 ## 0.2.0（2018.12.28）
 
-- 校正ルールのカスタマイズ
+- 設定画面から有効にする校正ルールを選択できるように変更
+
+## 0.1.6（2018.09.14）
+
+- 校正ルールを調整
+- iPhone XS、iPhone XRなどを辞書に追加
 
 ## 0.1.5（2018.09.07）
 

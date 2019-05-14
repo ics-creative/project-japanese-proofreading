@@ -1,6 +1,8 @@
 import { TextlintMessage, TextlintResult } from "@textlint/kernel";
 import * as path from "path";
 import { TextLintEngine } from "textlint";
+import { rules } from "./rules/rule";
+
 import {
   createConnection,
   Diagnostic,
@@ -44,7 +46,20 @@ connection.onInitialized(() => {
   }
 });
 
-const defaultSettings: ITextlintSettings = { maxNumberOfProblems: 1000 };
+function getDefaultTextlintSettings() {
+  const mySettings = new Map<string, boolean>();
+
+  rules.forEach((value, index, array) => {
+    mySettings[value.ruleName] = value.enabled;
+  });
+
+  return mySettings;
+}
+
+const defaultSettings: ITextlintSettings = {
+  maxNumberOfProblems: 1000,
+  textlint: getDefaultTextlintSettings(),
+};
 let globalSettings: ITextlintSettings = defaultSettings;
 const documentSettings: Map<string, Thenable<ITextlintSettings>> = new Map();
 
@@ -53,7 +68,7 @@ connection.onDidChangeConfiguration((change) => {
     // Reset all cached document settings
     documentSettings.clear();
   } else {
-    globalSettings = (change.settings.textlintConfig ||
+    globalSettings = (change.settings["japanese-proofreading"] ||
       defaultSettings) as ITextlintSettings;
   }
 
@@ -69,7 +84,7 @@ function getDocumentSettings(resource: string): Thenable<ITextlintSettings> {
   if (!result) {
     result = connection.workspace.getConfiguration({
       scopeUri: resource,
-      section: "textlintConfig",
+      section: "japanese-proofreading",
     });
     documentSettings.set(resource, result);
   }
@@ -106,16 +121,18 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
 
   if (engine.isErrorResults(results)) {
     const messages: TextlintMessage[] = results[0].messages;
-
     const l: number = messages.length;
     for (let i: number = 0; i < l; i++) {
       const message: TextlintMessage = messages[i];
-      const text: string = message.message;
+      const text: string = `${message.message}（${message.ruleId}）`;
       const pos: Position = Position.create(
         Math.max(0, message.line - 1),
         Math.max(0, message.column - 1),
       );
-
+      // 対象チェック
+      if (!isTarget(settings, message.ruleId, message.message)) {
+        continue;
+      }
       const diagnostic: Diagnostic = {
         severity: toDiagnosticSeverity(message.severity),
         range: Range.create(pos, pos),
@@ -129,6 +146,26 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
 
   // Send the computed diagnostics to VSCode.
   connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+}
+
+function isTarget(
+  settings: ITextlintSettings,
+  ruleId: string,
+  message: string,
+): boolean {
+  let bool: boolean = false;
+  rules.forEach((element, index, array) => {
+    // prhのとき、ruleIdからprh内の細かいルールを取得できないのでmessageに含まれているか取得している
+    if (ruleId === "prh") {
+      const ruleIdSub = element.ruleId.split("/")[1];
+      if (message.includes(`（${ruleIdSub}）`)) {
+        bool = settings.textlint[element.ruleName];
+      }
+    } else if (element.ruleId === ruleId) {
+      bool = settings.textlint[element.ruleName];
+    }
+  });
+  return bool;
 }
 
 /**
@@ -161,4 +198,5 @@ connection.listen();
 
 interface ITextlintSettings {
   maxNumberOfProblems: number;
+  textlint: Map<string, boolean>;
 }

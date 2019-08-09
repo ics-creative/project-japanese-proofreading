@@ -31,5 +31,8 @@
     "prh": {
       "rulePaths": ["./node_modules/textlint-rule-preset-icsmedia/dict/prh.yml"]
     }
-  }
+  },
+  "plugins": [
+    "review"
+  ]
 }

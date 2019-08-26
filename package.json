@@ -189,8 +189,8 @@
     "vscode-test": "^1.2.0"
   },
   "dependencies": {
-    "debug": "^3.2.6",
-    "textlint": "^11.3.1",
+    "debug": "^3.2.6",    
+    "textlint": "^11.0.0",
     "textlint-rule-max-ten": "^2.0.3",
     "textlint-rule-no-mix-dearu-desumasu": "^3.0.3",
     "textlint-rule-preset-icsmedia": "github:ics-creative/textlint-rule-preset-icsmedia",

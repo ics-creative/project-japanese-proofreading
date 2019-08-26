@@ -173,7 +173,6 @@
     "watch": "tsc -watch -p ./",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "format": "tslint -c tslint.json 'src/**/*.ts' --fix",
-    "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "npm run compile && node ./node_modules/vscode/bin/test",
     "update-dictionary": "npm uninstall textlint-rule-preset-icsmedia && npm i ics-creative/textlint-rule-preset-icsmedia",
     "vsce:package": "vsce package"
@@ -181,12 +180,13 @@
   "devDependencies": {
     "@types/mocha": "^5.2.7",
     "@types/node": "^10.14.16",
+    "@types/vscode": "^1.37.0",
     "prettier": "^1.18.2",
     "textlint-plugin-review": "^0.3.3",
     "tslint": "^5.19.0",
     "tslint-plugin-prettier": "^1.3.0",
     "typescript": "^2.9.2",
-    "vscode": "^1.1.36"
+    "vscode-test": "^1.2.0"
   },
   "dependencies": {
     "debug": "^3.2.6",

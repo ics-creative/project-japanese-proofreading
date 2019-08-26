@@ -27,6 +27,7 @@
     "Other"
   ],
   "activationEvents": [
+    "onLanguage:review",
     "onLanguage:markdown",
     "onLanguage:plaintext"
   ],
@@ -181,6 +182,7 @@
     "@types/mocha": "^5.2.7",
     "@types/node": "^10.14.16",
     "prettier": "^1.18.2",
+    "textlint-plugin-review": "^0.3.3",
     "tslint": "^5.19.0",
     "tslint-plugin-prettier": "^1.3.0",
     "typescript": "^2.9.2",

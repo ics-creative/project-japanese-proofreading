@@ -178,25 +178,25 @@
     "vsce:package": "vsce package"
   },
   "devDependencies": {
-    "@types/mocha": "^5.2.3",
-    "@types/node": "^10.9.4",
-    "prettier": "^1.14.2",
-    "tslint": "^5.11.0",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^10.14.16",
+    "prettier": "^1.18.2",
+    "tslint": "^5.19.0",
     "tslint-plugin-prettier": "^1.3.0",
     "typescript": "^2.9.2",
-    "vscode": "^1.1.18"
+    "vscode": "^1.1.36"
   },
   "dependencies": {
-    "debug": "^3.1.0",
-    "textlint": "^11.0.0",
+    "debug": "^3.2.6",
+    "textlint": "^11.3.1",
     "textlint-rule-max-ten": "^2.0.3",
     "textlint-rule-no-mix-dearu-desumasu": "^3.0.3",
     "textlint-rule-preset-icsmedia": "github:ics-creative/textlint-rule-preset-icsmedia",
-    "textlint-rule-preset-japanese": "^4.0.0",
-    "textlint-rule-preset-jtf-style": "^2.3.1",
-    "textlint-rule-prh": "^5.2.0",
+    "textlint-rule-preset-japanese": "^4.0.4",
+    "textlint-rule-preset-jtf-style": "^2.3.3",
+    "textlint-rule-prh": "^5.2.1",
     "vscode-languageclient": "^4.2.1",
     "vscode-languageserver": "^4.2.1",
-    "vscode-uri": "^1.0.5"
+    "vscode-uri": "^1.0.8"
   }
 }

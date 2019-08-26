@@ -2,10 +2,10 @@
   "name": "japanese-proofreading",
   "displayName": "テキスト校正くん",
   "description": "VS CodeでテキストファイルやMarkdownファイルの日本語の文章をチェックする拡張機能",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "publisher": "ICS",
   "engines": {
-    "vscode": "^1.25.0"
+    "vscode": "^1.37.0"
   },
   "icon": "images/icon.png",
   "galleryBanner": {
@@ -189,7 +189,7 @@
     "vscode-test": "^1.2.0"
   },
   "dependencies": {
-    "debug": "^3.2.6",    
+    "debug": "^3.2.6",
     "textlint": "^11.0.0",
     "textlint-rule-max-ten": "^2.0.3",
     "textlint-rule-no-mix-dearu-desumasu": "^3.0.3",

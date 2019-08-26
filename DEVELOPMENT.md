@@ -36,7 +36,7 @@ https://vscode-doc-jp.github.io/docs/extensions/publish-extension.html
 2. `CHANGELOG.md`に更新するバージョンの変更履歴を追記します。
 
 3. 以下のコマンドを実行し公開処理を行います。  
-  コマンド実行後、マーケット側でverifyが行われ、問題なければ数分後にマーケットに反映されます。
+  コマンド実行後、マーケット側でverifyが行われ、問題なければ数分後マーケットに反映されます。
   ```shell
   vsce publish
   ```

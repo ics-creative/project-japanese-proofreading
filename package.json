@@ -8,7 +8,7 @@
     "npm": "~6",
     "node": "~8",
     "vscode": "^1.37.0"
-    },
+  },
   "icon": "images/icon.png",
   "galleryBanner": {
     "color": "#424242",

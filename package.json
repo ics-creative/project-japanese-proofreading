@@ -182,7 +182,6 @@
     "@types/node": "^10.14.16",
     "@types/vscode": "^1.37.0",
     "prettier": "^1.18.2",
-    "textlint-plugin-review": "^0.3.3",
     "tslint": "^5.19.0",
     "tslint-plugin-prettier": "^1.3.0",
     "typescript": "^2.9.2",
@@ -191,6 +190,7 @@
   "dependencies": {
     "debug": "^3.2.6",
     "textlint": "^11.0.0",
+    "textlint-plugin-review": "^0.3.3",
     "textlint-rule-max-ten": "^2.0.3",
     "textlint-rule-no-mix-dearu-desumasu": "^3.0.3",
     "textlint-rule-preset-icsmedia": "github:ics-creative/textlint-rule-preset-icsmedia",

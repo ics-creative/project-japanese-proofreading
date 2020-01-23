@@ -33,6 +33,7 @@
     }
   },
   "plugins": [
+    "latex2e",
     "review"
   ]
 }

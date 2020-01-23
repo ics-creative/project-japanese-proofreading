@@ -29,6 +29,7 @@
     "Other"
   ],
   "activationEvents": [
+    "onLanguage:latex",
     "onLanguage:review",
     "onLanguage:markdown",
     "onLanguage:plaintext"
@@ -192,6 +193,7 @@
   "dependencies": {
     "debug": "^3.2.6",
     "textlint": "^11.0.0",
+    "textlint-plugin-latex2e": "^0.3.4",
     "textlint-plugin-review": "^0.3.3",
     "textlint-rule-max-ten": "^2.0.3",
     "textlint-rule-no-mix-dearu-desumasu": "^3.0.3",

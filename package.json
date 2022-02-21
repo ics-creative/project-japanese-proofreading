@@ -5,9 +5,7 @@
   "version": "0.2.3",
   "publisher": "ICS",
   "engines": {
-    "npm": "~6",
-    "node": "~8",
-    "vscode": "^1.37.0"
+    "vscode": "^1.64.0"
   },
   "icon": "images/icon.png",
   "galleryBanner": {

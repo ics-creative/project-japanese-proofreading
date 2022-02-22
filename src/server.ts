@@ -1,8 +1,7 @@
 import { TextlintMessage, TextlintResult } from "@textlint/kernel";
 import * as path from "path";
 import { TextLintEngine } from "textlint";
-import { rules } from "./rules/rule";
-
+import { TextDocument } from "vscode-languageserver-textdocument";
 import {
   createConnection,
   Diagnostic,
@@ -12,16 +11,17 @@ import {
   Position,
   ProposedFeatures,
   Range,
-  TextDocument,
   TextDocuments,
-} from "vscode-languageserver";
-import * as vscode_uri from "vscode-uri";
+  TextDocumentSyncKind,
+} from "vscode-languageserver/node";
+import { URI } from "vscode-uri";
+import { rules } from "./rules/rule";
 
 // サーバーへの接続を作成(すべての提案された機能も含む)
 const connection = createConnection(ProposedFeatures.all);
 
 // テキストドキュメントを管理するクラスを作成します。
-const documents: TextDocuments = new TextDocuments();
+const documents = new TextDocuments(TextDocument);
 
 let hasConfigurationCapability: boolean = false;
 
@@ -32,7 +32,7 @@ connection.onInitialize((params: InitializeParams) => {
 
   return {
     capabilities: {
-      textDocumentSync: documents.syncKind,
+      textDocumentSync: TextDocumentSyncKind.Incremental,
     },
   };
 });
@@ -108,9 +108,7 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
   const settings = await getDocumentSettings(textDocument.uri);
 
   const document = textDocument.getText();
-  const ext: string = path.extname(
-    vscode_uri.default.parse(textDocument.uri).fsPath,
-  );
+  const ext: string = path.extname(URI.parse(textDocument.uri).fsPath);
 
   const engine: TextLintEngine = new TextLintEngine({
     configFile: path.resolve(__dirname, "../.textlintrc"),

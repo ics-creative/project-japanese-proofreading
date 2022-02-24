@@ -21,15 +21,15 @@ import { rules } from "./rules/rule";
 const connection = createConnection(ProposedFeatures.all);
 
 // テキストドキュメントを管理するクラスを作成します。
-const documents = new TextDocuments(TextDocument);
+const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
 let hasConfigurationCapability: boolean = false;
 
 connection.onInitialize((params: InitializeParams) => {
   const capabilities = params.capabilities;
   hasConfigurationCapability =
-    capabilities.workspace && !!capabilities.workspace.configuration;
-
+    capabilities.workspace === true &&
+    !!capabilities.workspace.configuration === true;
   return {
     capabilities: {
       textDocumentSync: TextDocumentSyncKind.Incremental,
@@ -50,7 +50,7 @@ function getDefaultTextlintSettings() {
   const mySettings = new Map<string, boolean>();
 
   rules.forEach((value, index, array) => {
-    mySettings[value.ruleName] = value.enabled;
+    mySettings.set(value.ruleName, value.enabled);
   });
 
   return mySettings;
@@ -157,10 +157,10 @@ function isTarget(
     if (ruleId === "prh") {
       const ruleIdSub = element.ruleId.split("/")[1];
       if (message.includes(`（${ruleIdSub}）`)) {
-        bool = settings.textlint[element.ruleName];
+        bool = settings.textlint.get(element.ruleName) === true;
       }
     } else if (element.ruleId === ruleId) {
-      bool = settings.textlint[element.ruleName];
+      bool = settings.textlint.get(element.ruleName) === true;
     }
   });
   return bool;
@@ -175,7 +175,7 @@ async function resetTextDocument(textDocument: TextDocument): Promise<void> {
   connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 }
 
-function toDiagnosticSeverity(severity) {
+function toDiagnosticSeverity(severity: number) {
   switch (severity) {
     case 0:
       return DiagnosticSeverity.Information;

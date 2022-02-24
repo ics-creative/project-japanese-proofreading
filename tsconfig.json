@@ -9,7 +9,7 @@
         "sourceMap": false,
         "rootDir": "src",
         /* Strict Type-Checking Option */
-        "strict": false,   /* enable all strict type-checking options */
+        "strict": true,   /* enable all strict type-checking options */
         /* Additional Checks */
         "noUnusedLocals": false /* Report errors on unused locals. */
         // "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */

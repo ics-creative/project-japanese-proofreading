@@ -63,7 +63,7 @@ const defaultSettings: ITextlintSettings = {
 let globalSettings: ITextlintSettings = defaultSettings;
 const documentSettings: Map<string, Thenable<ITextlintSettings>> = new Map();
 
-connection.onDidChangeConfiguration((change) => {
+connection.onDidChangeConfiguration(change => {
   if (hasConfigurationCapability) {
     // Reset all cached document settings
     documentSettings.clear();
@@ -98,13 +98,13 @@ documents.onDidClose((close) => {
 });
 
 // ドキュメントを初めて開いた時と内容に変更があった際に実行します。
-documents.onDidChangeContent((change) => {
+documents.onDidChangeContent(async change => {
   validateTextDocument(change.document);
 });
 
 // バリデーション（textlint）を実施
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
-  // In this simple example we get the settings for every validate run.
+  // 拡張機能の設定情報を取得
   const settings = await getDocumentSettings(textDocument.uri);
 
   const document = textDocument.getText();
@@ -123,9 +123,14 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
     for (let i: number = 0; i < l; i++) {
       const message: TextlintMessage = messages[i];
       const text: string = `${message.message}（${message.ruleId}）`;
-      const pos: Position = Position.create(
+      const posRange = message.fix?.range ? message.fix.range[1] - message.fix.range[0] : 0;
+      const startPos: Position = Position.create(
         Math.max(0, message.line - 1),
         Math.max(0, message.column - 1),
+      );
+      const endPos: Position = Position.create(
+        Math.max(0, message.line - 1),
+        Math.max(0, message.column - 1 + posRange),
       );
       // 対象チェック
       if (!isTarget(settings, message.ruleId, message.message)) {
@@ -133,7 +138,7 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
       }
       const diagnostic: Diagnostic = {
         severity: toDiagnosticSeverity(message.severity),
-        range: Range.create(pos, pos),
+        range: Range.create(startPos, endPos),
         message: text,
         source: "テキスト校正くん",
         code: message.ruleId,
@@ -141,26 +146,25 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
       diagnostics.push(diagnostic);
     }
   }
-
-  // Send the computed diagnostics to VSCode.
+  // 診断結果をVSCodeに送信し、ユーザーインターフェースに表示します。
   connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 }
 
 function isTarget(
   settings: ITextlintSettings,
-  ruleId: string,
+  targetRuleId: string,
   message: string,
 ): boolean {
   let bool: boolean = false;
-  rules.forEach((element, index, array) => {
-    // prhのとき、ruleIdからprh内の細かいルールを取得できないのでmessageに含まれているか取得している
-    if (ruleId === "prh") {
-      const ruleIdSub = element.ruleId.split("/")[1];
+  rules.forEach((rule, index, array) => {
+    if (targetRuleId === "prh") {
+      // prhのとき、ruleIdからprh内の細かいルールを取得できないのでmessageに含まれているか取得している
+      const ruleIdSub = rule.ruleId.split("/")[1];
       if (message.includes(`（${ruleIdSub}）`)) {
-        bool = settings.textlint.get(element.ruleName) === true;
+        bool = settings.textlint.get(rule.ruleName) === true;
       }
-    } else if (element.ruleId === ruleId) {
-      bool = settings.textlint.get(element.ruleName) === true;
+    } else if(rule.ruleId.includes(targetRuleId)) {
+      bool = settings.textlint.get(rule.ruleName) === true;
     }
   });
   return bool;

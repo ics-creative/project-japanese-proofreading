@@ -1,8 +1,7 @@
 import { TextlintMessage, TextlintResult } from "@textlint/kernel";
 import * as path from "path";
 import { TextLintEngine } from "textlint";
-import { rules } from "./rules/rule";
-
+import { TextDocument } from "vscode-languageserver-textdocument";
 import {
   createConnection,
   Diagnostic,
@@ -12,27 +11,28 @@ import {
   Position,
   ProposedFeatures,
   Range,
-  TextDocument,
   TextDocuments,
-} from "vscode-languageserver";
-import * as vscode_uri from "vscode-uri";
+  TextDocumentSyncKind,
+} from "vscode-languageserver/node";
+import { URI } from "vscode-uri";
+import { rules } from "./rules/rule";
 
 // サーバーへの接続を作成(すべての提案された機能も含む)
 const connection = createConnection(ProposedFeatures.all);
 
 // テキストドキュメントを管理するクラスを作成します。
-const documents: TextDocuments = new TextDocuments();
+const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
 let hasConfigurationCapability: boolean = false;
 
 connection.onInitialize((params: InitializeParams) => {
   const capabilities = params.capabilities;
   hasConfigurationCapability =
-    capabilities.workspace && !!capabilities.workspace.configuration;
+    (capabilities.workspace && !!capabilities.workspace.configuration) ?? false;
 
   return {
     capabilities: {
-      textDocumentSync: documents.syncKind,
+      textDocumentSync: TextDocumentSyncKind.Incremental,
     },
   };
 });
@@ -47,7 +47,7 @@ connection.onInitialized(() => {
 });
 
 function getDefaultTextlintSettings() {
-  const mySettings = new Map<string, boolean>();
+  const mySettings: { [key: string]: boolean } = {};
 
   rules.forEach((value, index, array) => {
     mySettings[value.ruleName] = value.enabled;
@@ -98,19 +98,17 @@ documents.onDidClose((close) => {
 });
 
 // ドキュメントを初めて開いた時と内容に変更があった際に実行します。
-documents.onDidChangeContent((change) => {
+documents.onDidChangeContent(async (change) => {
   validateTextDocument(change.document);
 });
 
 // バリデーション（textlint）を実施
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
-  // In this simple example we get the settings for every validate run.
+  // 拡張機能の設定情報を取得
   const settings = await getDocumentSettings(textDocument.uri);
 
   const document = textDocument.getText();
-  const ext: string = path.extname(
-    vscode_uri.default.parse(textDocument.uri).fsPath,
-  );
+  const ext: string = path.extname(URI.parse(textDocument.uri).fsPath);
 
   const engine: TextLintEngine = new TextLintEngine({
     configFile: path.resolve(__dirname, "../.textlintrc"),
@@ -119,23 +117,36 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
   const results: TextlintResult[] = await engine.executeOnText(document, ext);
   const diagnostics: Diagnostic[] = [];
 
+  // エラーが存在する場合
   if (engine.isErrorResults(results)) {
+    // エラーメッセージ一覧を取得
     const messages: TextlintMessage[] = results[0].messages;
     const l: number = messages.length;
     for (let i: number = 0; i < l; i++) {
       const message: TextlintMessage = messages[i];
       const text: string = `${message.message}（${message.ruleId}）`;
-      const pos: Position = Position.create(
-        Math.max(0, message.line - 1),
-        Math.max(0, message.column - 1),
-      );
       // 対象チェック
       if (!isTarget(settings, message.ruleId, message.message)) {
         continue;
       }
+      // エラーの文字数を取得します。
+      // 文字数が存在しない場合の値は0になります。
+      const posRange = message.fix?.range
+        ? message.fix.range[1] - message.fix.range[0]
+        : 0;
+      // エラーの開始位置を取得します。
+      const startPos: Position = Position.create(
+        Math.max(0, message.line - 1),
+        Math.max(0, message.column - 1),
+      );
+      // エラーの終了位置を取得します。
+      const endPos: Position = Position.create(
+        Math.max(0, message.line - 1),
+        Math.max(0, message.column - 1 + posRange),
+      );
       const diagnostic: Diagnostic = {
         severity: toDiagnosticSeverity(message.severity),
-        range: Range.create(pos, pos),
+        range: Range.create(startPos, endPos),
         message: text,
         source: "テキスト校正くん",
         code: message.ruleId,
@@ -143,26 +154,25 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
       diagnostics.push(diagnostic);
     }
   }
-
-  // Send the computed diagnostics to VSCode.
+  // 診断結果をVSCodeに送信し、ユーザーインターフェースに表示します。
   connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 }
 
 function isTarget(
   settings: ITextlintSettings,
-  ruleId: string,
+  targetRuleId: string,
   message: string,
 ): boolean {
   let bool: boolean = false;
-  rules.forEach((element, index, array) => {
-    // prhのとき、ruleIdからprh内の細かいルールを取得できないのでmessageに含まれているか取得している
-    if (ruleId === "prh") {
-      const ruleIdSub = element.ruleId.split("/")[1];
+  rules.forEach((rule, index, array) => {
+    if (targetRuleId === "prh") {
+      // prhのとき、ruleIdからprh内の細かいルールを取得できないのでmessageに含まれているか取得している
+      const ruleIdSub = rule.ruleId.split("/")[1];
       if (message.includes(`（${ruleIdSub}）`)) {
-        bool = settings.textlint[element.ruleName];
+        bool = settings.textlint[rule.ruleName];
       }
-    } else if (element.ruleId === ruleId) {
-      bool = settings.textlint[element.ruleName];
+    } else if (rule.ruleId.includes(targetRuleId)) {
+      bool = settings.textlint[rule.ruleName];
     }
   });
   return bool;
@@ -177,7 +187,7 @@ async function resetTextDocument(textDocument: TextDocument): Promise<void> {
   connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 }
 
-function toDiagnosticSeverity(severity) {
+function toDiagnosticSeverity(severity: number) {
   switch (severity) {
     case 0:
       return DiagnosticSeverity.Information;
@@ -196,7 +206,15 @@ documents.listen(connection);
 // Listen on the connection
 connection.listen();
 
+/**
+ * 拡張機能の設定情報
+ */
 interface ITextlintSettings {
+  /** 問題を表示する最大数 */
   maxNumberOfProblems: number;
-  textlint: Map<string, boolean>;
+  /**
+   * textlintの設定
+   * trueとなっているルールを適用します。
+   */
+  textlint: { [key: string]: boolean };
 }

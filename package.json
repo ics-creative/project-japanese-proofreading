@@ -5,9 +5,7 @@
   "version": "0.2.3",
   "publisher": "ICS",
   "engines": {
-    "npm": "~6",
-    "node": "~8",
-    "vscode": "^1.37.0"
+    "vscode": "^1.43.0"
   },
   "icon": "images/icon.png",
   "galleryBanner": {
@@ -180,27 +178,28 @@
     "vsce:package": "vsce package"
   },
   "devDependencies": {
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^10.14.16",
-    "@types/vscode": "^1.37.0",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^12.12.0",
+    "@types/vscode": "^1.64.0",
     "prettier": "^1.18.2",
     "tslint": "^5.19.0",
     "tslint-plugin-prettier": "^1.3.0",
-    "typescript": "^2.9.2",
+    "typescript": "^4.5.5",
     "vscode-test": "^1.2.0"
   },
   "dependencies": {
     "debug": "^3.2.6",
-    "textlint": "^11.0.0",
-    "textlint-plugin-review": "^0.3.3",
-    "textlint-rule-max-ten": "^2.0.3",
-    "textlint-rule-no-mix-dearu-desumasu": "^3.0.3",
+    "textlint": "^12.1.1",
+    "textlint-plugin-review": "^0.4.1",
+    "textlint-rule-max-ten": "^4.0.3",
+    "textlint-rule-no-mix-dearu-desumasu": "^5.0.0",
     "textlint-rule-preset-icsmedia": "github:ics-creative/textlint-rule-preset-icsmedia",
-    "textlint-rule-preset-japanese": "^4.0.4",
-    "textlint-rule-preset-jtf-style": "^2.3.3",
-    "textlint-rule-prh": "^5.2.1",
-    "vscode-languageclient": "^4.2.1",
-    "vscode-languageserver": "^4.2.1",
-    "vscode-uri": "^1.0.8"
+    "textlint-rule-preset-japanese": "^7.0.0",
+    "textlint-rule-preset-jtf-style": "^2.3.12",
+    "textlint-rule-prh": "^5.3.0",
+    "vscode-languageclient": "^7.0.0",
+    "vscode-languageserver": "^7.0.0",
+    "vscode-languageserver-textdocument": "^1.0.4",
+    "vscode-uri": "^3.0.3"
   }
 }

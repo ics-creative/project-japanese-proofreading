@@ -48,7 +48,7 @@ connection.onInitialized(() => {
 });
 
 function getDefaultTextlintSettings() {
-  const mySettings: {[key: string]: boolean} = {};
+  const mySettings: { [key: string]: boolean } = {};
 
   rules.forEach((value, index, array) => {
     mySettings[value.ruleName] = value.enabled;
@@ -64,7 +64,7 @@ const defaultSettings: ITextlintSettings = {
 let globalSettings: ITextlintSettings = defaultSettings;
 const documentSettings: Map<string, Thenable<ITextlintSettings>> = new Map();
 
-connection.onDidChangeConfiguration(change => {
+connection.onDidChangeConfiguration((change) => {
   if (hasConfigurationCapability) {
     // Reset all cached document settings
     documentSettings.clear();
@@ -99,7 +99,7 @@ documents.onDidClose((close) => {
 });
 
 // ドキュメントを初めて開いた時と内容に変更があった際に実行します。
-documents.onDidChangeContent(async change => {
+documents.onDidChangeContent(async (change) => {
   validateTextDocument(change.document);
 });
 
@@ -124,7 +124,9 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
     for (let i: number = 0; i < l; i++) {
       const message: TextlintMessage = messages[i];
       const text: string = `${message.message}（${message.ruleId}）`;
-      const posRange = message.fix?.range ? message.fix.range[1] - message.fix.range[0] : 0;
+      const posRange = message.fix?.range
+        ? message.fix.range[1] - message.fix.range[0]
+        : 0;
       const startPos: Position = Position.create(
         Math.max(0, message.line - 1),
         Math.max(0, message.column - 1),
@@ -164,7 +166,7 @@ function isTarget(
       if (message.includes(`（${ruleIdSub}）`)) {
         bool = settings.textlint[rule.ruleName];
       }
-    } else if(rule.ruleId.includes(targetRuleId)) {
+    } else if (rule.ruleId.includes(targetRuleId)) {
       bool = settings.textlint[rule.ruleName];
     }
   });
@@ -201,5 +203,5 @@ connection.listen();
 
 interface ITextlintSettings {
   maxNumberOfProblems: number;
-  textlint: {[key:string]: boolean};
+  textlint: { [key: string]: boolean };
 }

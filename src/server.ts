@@ -23,14 +23,13 @@ const connection = createConnection(ProposedFeatures.all);
 // テキストドキュメントを管理するクラスを作成します。
 const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
-let hasConfigurationCapability: boolean | undefined = false;
+let hasConfigurationCapability: boolean = false;
 
 connection.onInitialize((params: InitializeParams) => {
   const capabilities = params.capabilities;
   hasConfigurationCapability =
-    capabilities.workspace &&
-    !!capabilities.workspace.configuration;
-    
+    (capabilities.workspace && !!capabilities.workspace.configuration) ?? false;
+
   return {
     capabilities: {
       textDocumentSync: TextDocumentSyncKind.Incremental,

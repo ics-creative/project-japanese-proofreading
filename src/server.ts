@@ -48,10 +48,10 @@ connection.onInitialized(() => {
 });
 
 function getDefaultTextlintSettings() {
-  const mySettings = new Map<string, boolean>();
+  const mySettings: {[key: string]: boolean} = {};
 
   rules.forEach((value, index, array) => {
-    mySettings.set(value.ruleName, value.enabled);
+    mySettings[value.ruleName] = value.enabled;
   });
 
   return mySettings;
@@ -162,10 +162,10 @@ function isTarget(
       // prhのとき、ruleIdからprh内の細かいルールを取得できないのでmessageに含まれているか取得している
       const ruleIdSub = rule.ruleId.split("/")[1];
       if (message.includes(`（${ruleIdSub}）`)) {
-        bool = settings.textlint.get(rule.ruleName) === true;
+        bool = settings.textlint[rule.ruleName];
       }
     } else if(rule.ruleId.includes(targetRuleId)) {
-      bool = settings.textlint.get(rule.ruleName) === true;
+      bool = settings.textlint[rule.ruleName];
     }
   });
   return bool;
@@ -201,5 +201,5 @@ connection.listen();
 
 interface ITextlintSettings {
   maxNumberOfProblems: number;
-  textlint: Map<string, boolean>;
+  textlint: {[key:string]: boolean};
 }

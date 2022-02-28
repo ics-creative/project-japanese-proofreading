@@ -117,27 +117,33 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
   const results: TextlintResult[] = await engine.executeOnText(document, ext);
   const diagnostics: Diagnostic[] = [];
 
+  // エラーが存在する場合
   if (engine.isErrorResults(results)) {
+    // エラーメッセージ一覧を取得
     const messages: TextlintMessage[] = results[0].messages;
     const l: number = messages.length;
     for (let i: number = 0; i < l; i++) {
       const message: TextlintMessage = messages[i];
       const text: string = `${message.message}（${message.ruleId}）`;
-      const posRange = message.fix?.range
-        ? message.fix.range[1] - message.fix.range[0]
-        : 0;
-      const startPos: Position = Position.create(
-        Math.max(0, message.line - 1),
-        Math.max(0, message.column - 1),
-      );
-      const endPos: Position = Position.create(
-        Math.max(0, message.line - 1),
-        Math.max(0, message.column - 1 + posRange),
-      );
       // 対象チェック
       if (!isTarget(settings, message.ruleId, message.message)) {
         continue;
       }
+      // エラーの文字数を取得します。
+      // 文字数が存在しない場合の値は0になります。
+      const posRange = message.fix?.range
+        ? message.fix.range[1] - message.fix.range[0]
+        : 0;
+      // エラーの開始位置を取得します。
+      const startPos: Position = Position.create(
+        Math.max(0, message.line - 1),
+        Math.max(0, message.column - 1),
+      );
+      // エラーの終了位置を取得します。
+      const endPos: Position = Position.create(
+        Math.max(0, message.line - 1),
+        Math.max(0, message.column - 1 + posRange),
+      );
       const diagnostic: Diagnostic = {
         severity: toDiagnosticSeverity(message.severity),
         range: Range.create(startPos, endPos),
@@ -200,7 +206,15 @@ documents.listen(connection);
 // Listen on the connection
 connection.listen();
 
+/**
+ * 拡張機能の設定情報
+ */
 interface ITextlintSettings {
+  /** 問題を表示する最大数 */
   maxNumberOfProblems: number;
+  /**
+   * textlintの設定
+   * trueとなっているルールを適用します。
+   */
   textlint: { [key: string]: boolean };
 }

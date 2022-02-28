@@ -2,6 +2,11 @@ import { IRuleItem } from "./rule-data";
 
 export const rules: IRuleItem[] = [
   {
+    ruleName: "ですます調",
+    ruleId: "no-mix-dearu-desumasu",
+    enabled: true,
+  },
+  {
     ruleName: "誤字",
     ruleId: "prh/誤字",
     enabled: true,

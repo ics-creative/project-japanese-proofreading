@@ -49,7 +49,7 @@ connection.onInitialized(() => {
 function getDefaultTextlintSettings() {
   const mySettings: { [key: string]: boolean } = {};
 
-  rules.forEach((value, index, array) => {
+  rules.forEach((value) => {
     mySettings[value.ruleName] = value.enabled;
   });
 
@@ -164,14 +164,19 @@ function isTarget(
   message: string,
 ): boolean {
   let bool: boolean = false;
-  rules.forEach((rule, index, array) => {
-    if (targetRuleId === "prh") {
-      // prhのとき、ruleIdからprh内の細かいルールを取得できないのでmessageに含まれているか取得している
+  rules.forEach((rule) => {
+    if (targetRuleId === "no-mix-dearu-desumasu") {
+      // ですます調の場合
+      bool = settings.textlint[rule.ruleName];
+    } else if (targetRuleId === "prh") {
+      // prhのルールの場合
+      // ruleIdからprh内の細かいルールを取得できないのでmessageに含まれているか取得している
       const ruleIdSub = rule.ruleId.split("/")[1];
       if (message.includes(`（${ruleIdSub}）`)) {
         bool = settings.textlint[rule.ruleName];
       }
     } else if (rule.ruleId.includes(targetRuleId)) {
+      // textlintのルールの場合
       bool = settings.textlint[rule.ruleName];
     }
   });

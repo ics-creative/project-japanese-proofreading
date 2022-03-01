@@ -184,15 +184,15 @@ function isTarget(
       // ruleIdからprh内の細かいルールを取得できないのでmessageに含まれているか取得している
       const ruleIdSub = rule.ruleId.split("/")[1];
       if (message.includes(`（${ruleIdSub}）`)) {
-        // VSCodeの設定に存在しないテキスト校正くんのルールは、全て有効としています。
-        bool = settings.textlint[rule.ruleName] ?? true;
+        // VSCodeの設定に存在しないルールは、デフォルト設定を使用します。
+        bool = settings.textlint[rule.ruleName] ?? rule.enabled;
       }
     } else if (rule.ruleId.includes(targetRuleId)) {
       // 使用するルールのIDとエラーのルールIDが一致する場合
 
-      // VSCodeの設定に存在しないテキスト校正くんのルールは、全て有効としています。
+      // VSCodeの設定に存在しないルールは、デフォルト設定を使用します。
       // 例: ですます調、jtf-style/1.2.2
-      bool = settings.textlint[rule.ruleName] ?? true;
+      bool = settings.textlint[rule.ruleName] ?? rule.enabled;
     }
   });
   return bool;

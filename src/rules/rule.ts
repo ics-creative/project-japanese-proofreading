@@ -3,7 +3,7 @@ import { IRuleItem } from "./rule-data";
 export const rules: IRuleItem[] = [
   {
     ruleName: "ですます調",
-    ruleId: "no-mix-dearu-desumasu",
+    ruleId: "preset-japanese/no-mix-dearu-desumasu",
     enabled: true,
   },
   {

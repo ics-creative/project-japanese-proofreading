@@ -76,6 +76,9 @@ connection.onDidChangeConfiguration((change) => {
   documents.all().forEach(validateTextDocument);
 });
 
+/**
+ * VSCode側の設定を取得します。
+ */
 function getDocumentSettings(resource: string): Thenable<ITextlintSettings> {
   if (!hasConfigurationCapability) {
     return Promise.resolve(globalSettings);
@@ -102,17 +105,19 @@ documents.onDidChangeContent(async (change) => {
   validateTextDocument(change.document);
 });
 
+
+const engine: TextLintEngine = new TextLintEngine({
+  // textlint-rule-preset-icsmediaをそのまま使用せず、ymlファイルだけ参照している
+  configFile: path.resolve(__dirname, "../.textlintrc"),
+});
+
 // バリデーション（textlint）を実施
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
-  // 拡張機能の設定情報を取得
+  // VSCode側の設定を取得
   const settings = await getDocumentSettings(textDocument.uri);
 
   const document = textDocument.getText();
   const ext: string = path.extname(URI.parse(textDocument.uri).fsPath);
-
-  const engine: TextLintEngine = new TextLintEngine({
-    configFile: path.resolve(__dirname, "../.textlintrc"),
-  });
 
   const results: TextlintResult[] = await engine.executeOnText(document, ext);
   const diagnostics: Diagnostic[] = [];
@@ -125,7 +130,7 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
     for (let i: number = 0; i < l; i++) {
       const message: TextlintMessage = messages[i];
       const text: string = `${message.message}（${message.ruleId}）`;
-      // 対象チェック
+      // 有効とされているエラーか？
       if (!isTarget(settings, message.ruleId, message.message)) {
         continue;
       }
@@ -144,6 +149,7 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
         Math.max(0, message.line - 1),
         Math.max(0, message.column - 1 + posRange),
       );
+      // 診断結果を作成
       const diagnostic: Diagnostic = {
         severity: toDiagnosticSeverity(message.severity),
         range: Range.create(startPos, endPos),
@@ -158,6 +164,13 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
   connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 }
 
+/**
+ * 設定で有効としているエラーかどうか判定します。
+ * @param settings VSCode側の設定
+ * @param targetRuleId エラーのルールID
+ * @param message エラーメッセージ
+ * @returns
+ */
 function isTarget(
   settings: ITextlintSettings,
   targetRuleId: string,
@@ -214,7 +227,7 @@ documents.listen(connection);
 connection.listen();
 
 /**
- * 拡張機能の設定情報
+ * VSCode側の設定
  */
 interface ITextlintSettings {
   /** 問題を表示する最大数 */

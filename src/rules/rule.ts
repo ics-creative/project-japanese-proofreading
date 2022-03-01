@@ -1,5 +1,9 @@
 import { IRuleItem } from "./rule-data";
 
+/**
+ * テキスト校正くんで使用する、校正ルールのデフォルト設定です。
+ * VSCodeのユーザー設定に同じルールがある場合、VSCodeの設定が優先されます。
+ */
 export const rules: IRuleItem[] = [
   {
     ruleName: "ですます調",

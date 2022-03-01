@@ -165,19 +165,21 @@ function isTarget(
 ): boolean {
   let bool: boolean = false;
   rules.forEach((rule) => {
-    if (targetRuleId === "no-mix-dearu-desumasu") {
-      // ですます調の場合
-      bool = settings.textlint[rule.ruleName];
-    } else if (targetRuleId === "prh") {
+    if (targetRuleId === "prh") {
       // prhのルールの場合
+
       // ruleIdからprh内の細かいルールを取得できないのでmessageに含まれているか取得している
       const ruleIdSub = rule.ruleId.split("/")[1];
       if (message.includes(`（${ruleIdSub}）`)) {
-        bool = settings.textlint[rule.ruleName];
+        // VSCodeの設定に存在しないテキスト校正くんのルールは、全て有効としています。
+        bool = settings.textlint[rule.ruleName] ?? true;
       }
     } else if (rule.ruleId.includes(targetRuleId)) {
-      // textlintのルールの場合
-      bool = settings.textlint[rule.ruleName];
+      // 使用するルールのIDとエラーのルールIDが一致する場合
+
+      // VSCodeの設定に存在しないテキスト校正くんのルールは、全て有効としています。
+      // 例: ですます調、jtf-style/1.2.2
+      bool = settings.textlint[rule.ruleName] ?? true;
     }
   });
   return bool;

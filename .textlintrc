@@ -1,7 +1,6 @@
 {
   "filters": {},
   "rules": {
-    "no-mix-dearu-desumasu": true,
     "preset-japanese": {
       "sentence-length": {
         "max": 150
@@ -15,6 +14,7 @@
         "allow": ["も", "や", "か"],
         "separatorChars": ["、", "。", "?", "!", "？", "！", "「",  "」", "“", "”"]
       },
+      "no-mix-dearu-desumasu": true,
     },
     "preset-jtf-style": {
       "1.2.1.句点(。)と読点(、)": true,

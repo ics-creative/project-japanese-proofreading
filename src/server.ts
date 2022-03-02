@@ -15,7 +15,7 @@ import {
   TextDocumentSyncKind,
 } from "vscode-languageserver/node";
 import { URI } from "vscode-uri";
-import { rules } from "./rules/rule";
+import { DEFAULT_EXTENSION_RULES } from "./rules/rule";
 
 // サーバーへの接続を作成(すべての提案された機能も含む)
 const connection = createConnection(ProposedFeatures.all);
@@ -49,7 +49,7 @@ connection.onInitialized(() => {
 function getDefaultTextlintSettings() {
   const mySettings: { [key: string]: boolean } = {};
 
-  rules.forEach((value, index, array) => {
+  DEFAULT_EXTENSION_RULES.forEach((value) => {
     mySettings[value.ruleName] = value.enabled;
   });
 
@@ -76,6 +76,9 @@ connection.onDidChangeConfiguration((change) => {
   documents.all().forEach(validateTextDocument);
 });
 
+/**
+ * VSCode側の設定を取得します。
+ */
 function getDocumentSettings(resource: string): Thenable<ITextlintSettings> {
   if (!hasConfigurationCapability) {
     return Promise.resolve(globalSettings);
@@ -102,17 +105,18 @@ documents.onDidChangeContent(async (change) => {
   validateTextDocument(change.document);
 });
 
+const engine: TextLintEngine = new TextLintEngine({
+  // textlint-rule-preset-icsmediaをそのまま使用せず、ymlファイルだけ参照している
+  configFile: path.resolve(__dirname, "../.textlintrc"),
+});
+
 // バリデーション（textlint）を実施
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
-  // 拡張機能の設定情報を取得
+  // VSCode側の設定を取得
   const settings = await getDocumentSettings(textDocument.uri);
 
   const document = textDocument.getText();
   const ext: string = path.extname(URI.parse(textDocument.uri).fsPath);
-
-  const engine: TextLintEngine = new TextLintEngine({
-    configFile: path.resolve(__dirname, "../.textlintrc"),
-  });
 
   const results: TextlintResult[] = await engine.executeOnText(document, ext);
   const diagnostics: Diagnostic[] = [];
@@ -125,7 +129,7 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
     for (let i: number = 0; i < l; i++) {
       const message: TextlintMessage = messages[i];
       const text: string = `${message.message}（${message.ruleId}）`;
-      // 対象チェック
+      // 有効とされているエラーか？
       if (!isTarget(settings, message.ruleId, message.message)) {
         continue;
       }
@@ -144,6 +148,7 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
         Math.max(0, message.line - 1),
         Math.max(0, message.column - 1 + posRange),
       );
+      // 診断結果を作成
       const diagnostic: Diagnostic = {
         severity: toDiagnosticSeverity(message.severity),
         range: Range.create(startPos, endPos),
@@ -158,21 +163,35 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
   connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 }
 
+/**
+ * 設定で有効としているエラーかどうか判定します。
+ * @param settings VSCode側の設定
+ * @param targetRuleId エラーのルールID
+ * @param message エラーメッセージ
+ * @returns
+ */
 function isTarget(
   settings: ITextlintSettings,
   targetRuleId: string,
   message: string,
 ): boolean {
   let bool: boolean = false;
-  rules.forEach((rule, index, array) => {
+  DEFAULT_EXTENSION_RULES.forEach((rule) => {
     if (targetRuleId === "prh") {
-      // prhのとき、ruleIdからprh内の細かいルールを取得できないのでmessageに含まれているか取得している
+      // prhのルールの場合
+
+      // ruleIdからprh内の細かいルールを取得できないのでmessageに含まれているか取得している
       const ruleIdSub = rule.ruleId.split("/")[1];
       if (message.includes(`（${ruleIdSub}）`)) {
-        bool = settings.textlint[rule.ruleName];
+        // VSCodeの設定に存在しないルールは、デフォルト設定を使用します。
+        bool = settings.textlint[rule.ruleName] ?? rule.enabled;
       }
     } else if (rule.ruleId.includes(targetRuleId)) {
-      bool = settings.textlint[rule.ruleName];
+      // 使用するルールのIDとエラーのルールIDが一致する場合
+
+      // VSCodeの設定に存在しないルールは、デフォルト設定を使用します。
+      // 例: ですます調、jtf-style/1.2.2
+      bool = settings.textlint[rule.ruleName] ?? rule.enabled;
     }
   });
   return bool;
@@ -207,7 +226,7 @@ documents.listen(connection);
 connection.listen();
 
 /**
- * 拡張機能の設定情報
+ * VSCode側の設定
  */
 interface ITextlintSettings {
   /** 問題を表示する最大数 */

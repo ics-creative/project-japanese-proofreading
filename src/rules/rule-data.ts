@@ -1,5 +1,11 @@
-export interface IRuleItem {
-  ruleId: string; // モジュールのパッケージ名です。
+/**
+ * ルールのデフォルト設定
+ */
+export interface DefaultExtensionRuleType {
+  /** モジュールのパッケージ名です。 */
+  ruleId: string;
+  /** デフォルトでルールを有効にするか？ */
   enabled: boolean;
-  ruleName: string; // package.jsonのconfigurationの名前と同一
+  /** package.jsonのconfigurationの名前と同一 */
+  ruleName: string;
 }

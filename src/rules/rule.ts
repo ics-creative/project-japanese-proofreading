@@ -1,6 +1,22 @@
-import { IRuleItem } from "./rule-data";
+import { DefaultExtensionRuleType } from "./rule-data";
 
-export const rules: IRuleItem[] = [
+/**
+ * テキスト校正くんで使用する、「拡張機能のデフォルトルール」です。
+ * 関連する機能に以下があります。
+ * 「VSCodeのユーザー設定ルール」: VSCode設定画面で設定できます。
+ * 「ICS MEDIA校正ルール」: GitHubで提供されている辞書とルールのセットです。
+ *
+ * ルールに関して、同じルールがある場合、「拡張機能のデフォルトルール」より「VSCodeのユーザー設定ルール」が優先されます。
+ *
+ * 「ICS MEDIA校正ルール」のルールは、テキスト校正くんで利用しておらず、辞書のみを利用しています。
+ * 「ICS MEDIA校正ルール」の辞書は、「拡張機能のデフォルトルール」内に組み込まれています。
+ */
+export const DEFAULT_EXTENSION_RULES: readonly DefaultExtensionRuleType[] = [
+  {
+    ruleName: "ですます調",
+    ruleId: "preset-japanese/no-mix-dearu-desumasu",
+    enabled: true,
+  },
   {
     ruleName: "誤字",
     ruleId: "prh/誤字",
@@ -121,4 +137,4 @@ export const rules: IRuleItem[] = [
     ruleId: "preset-japanese/no-dropping-the-ra",
     enabled: true,
   },
-];
+] as const;

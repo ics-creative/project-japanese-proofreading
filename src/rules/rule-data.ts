@@ -1,7 +1,7 @@
 /**
  * ルールのデフォルト設定
  */
-export interface DefaultRuleType {
+export interface DefaultExtensionRuleType {
   /** モジュールのパッケージ名です。 */
   ruleId: string;
   /** デフォルトでルールを有効にするか？ */

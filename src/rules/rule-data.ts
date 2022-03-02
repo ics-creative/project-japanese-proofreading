@@ -1,9 +1,9 @@
 /**
  * ルールのデフォルト設定
  */
-export interface IRuleItem {
+export interface DefaultRuleType {
   /** モジュールのパッケージ名です。 */
-  ruleId: string; // モジュールのパッケージ名です。
+  ruleId: string;
   /** デフォルトでルールを有効にするか？ */
   enabled: boolean;
   /** package.jsonのconfigurationの名前と同一 */

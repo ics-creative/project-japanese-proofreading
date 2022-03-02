@@ -1,10 +1,10 @@
-import { IRuleItem } from "./rule-data";
+import { DefaultRuleType } from "./rule-data";
 
 /**
  * テキスト校正くんで使用する、校正ルールのデフォルト設定です。
  * VSCodeのユーザー設定に同じルールがある場合、VSCodeの設定が優先されます。
  */
-export const rules: IRuleItem[] = [
+export const DEFAULT_EXTENSION_RULES: readonly DefaultRuleType[] = [
   {
     ruleName: "ですます調",
     ruleId: "preset-japanese/no-mix-dearu-desumasu",
@@ -130,4 +130,4 @@ export const rules: IRuleItem[] = [
     ruleId: "preset-japanese/no-dropping-the-ra",
     enabled: true,
   },
-];
+] as const;

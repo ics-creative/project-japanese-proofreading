@@ -15,7 +15,7 @@ import {
   TextDocumentSyncKind,
 } from "vscode-languageserver/node";
 import { URI } from "vscode-uri";
-import { rules } from "./rules/rule";
+import { DEFAULT_EXTENSION_RULES } from "./rules/rule";
 
 // サーバーへの接続を作成(すべての提案された機能も含む)
 const connection = createConnection(ProposedFeatures.all);
@@ -49,7 +49,7 @@ connection.onInitialized(() => {
 function getDefaultTextlintSettings() {
   const mySettings: { [key: string]: boolean } = {};
 
-  rules.forEach((value) => {
+  DEFAULT_EXTENSION_RULES.forEach((value) => {
     mySettings[value.ruleName] = value.enabled;
   });
 
@@ -104,7 +104,6 @@ documents.onDidClose((close) => {
 documents.onDidChangeContent(async (change) => {
   validateTextDocument(change.document);
 });
-
 
 const engine: TextLintEngine = new TextLintEngine({
   // textlint-rule-preset-icsmediaをそのまま使用せず、ymlファイルだけ参照している
@@ -177,7 +176,7 @@ function isTarget(
   message: string,
 ): boolean {
   let bool: boolean = false;
-  rules.forEach((rule) => {
+  DEFAULT_EXTENSION_RULES.forEach((rule) => {
     if (targetRuleId === "prh") {
       // prhのルールの場合
 

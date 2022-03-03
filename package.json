@@ -27,6 +27,7 @@
     "Other"
   ],
   "activationEvents": [
+    "onLanguage:html",
     "onLanguage:latex",
     "onLanguage:review",
     "onLanguage:markdown",
@@ -188,6 +189,7 @@
   },
   "dependencies": {
     "textlint": "^12.1.1",
+    "textlint-plugin-html": "^0.3.0",
     "textlint-plugin-latex2e": "^1.1.4",
     "textlint-plugin-review": "^0.4.1",
     "textlint-rule-preset-icsmedia": "github:ics-creative/textlint-rule-preset-icsmedia",

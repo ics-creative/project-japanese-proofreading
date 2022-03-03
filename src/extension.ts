@@ -23,6 +23,7 @@ export function activate(context: ExtensionContext) {
   const clientOptions: LanguageClientOptions = {
     // Register the server for plain text documents
     documentSelector: [
+      { scheme: "file", language: "html" },
       { scheme: "file", language: "latex" },
       { scheme: "file", language: "review" },
       { scheme: "file", language: "plaintext" },

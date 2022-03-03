@@ -178,17 +178,14 @@
     "vsce:package": "vsce package"
   },
   "devDependencies": {
-    "@types/mocha": "^9.0.0",
     "@types/node": "^12.12.0",
     "@types/vscode": "^1.64.0",
     "prettier": "^1.18.2",
     "tslint": "^5.19.0",
     "tslint-plugin-prettier": "^1.3.0",
     "typescript": "^4.5.5",
-    "vscode-test": "^1.2.0"
   },
   "dependencies": {
-    "debug": "^3.2.6",
     "textlint": "^12.1.1",
     "textlint-plugin-review": "^0.4.1",
     "textlint-rule-preset-icsmedia": "github:ics-creative/textlint-rule-preset-icsmedia",

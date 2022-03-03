@@ -101,10 +101,15 @@
           "default": true,
           "description": "有効（同じ助詞を連続して使用していないかチェックします）"
         },
-        "japanese-proofreading.textlint.句点(。)と読点(、)": {
+        "japanese-proofreading.textlint.ピリオドとカンマの使用（半角）": {
           "type": "boolean",
           "default": true,
-          "description": "有効（和文の句読点にピリオドやカンマを使用していないかチェックします）"
+          "description": "有効（和文の句読点に半角ピリオド(.)や半角カンマ(,)を使用していないかチェックします）"
+        },
+        "japanese-proofreading.textlint.ピリオドとカンマの使用（全角）": {
+          "type": "boolean",
+          "default": true,
+          "description": "有効（和文の句読点に全角ピリオド(．)や全角カンマ(，)を使用していないかチェックします）"
         },
         "japanese-proofreading.textlint.算用数字": {
           "type": "boolean",

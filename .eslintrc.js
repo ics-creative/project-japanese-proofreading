@@ -14,8 +14,8 @@ module.exports = {
     "@typescript-eslint"
   ],
   rules: {
-    sortkeys: 0,
-    noconsole: 0
+    "sort-keys": 0,
+    "no-console": 0
   },
   ignorePatterns: [
     "node_modules",

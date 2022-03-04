@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.1.0（2022.03.04）
+
+- 校正機能が利用できるファイル形式を追加
+  - Latex（`.tex`）ファイル
+  - HTML（`.html`）ファイル
+- 和文における全半角の句読点（カンマ・ピリオド）を許容する設定項目を追加 [#5](https://github.com/ics-creative/project-japanese-proofreading/issues/5)
+
 ## 1.0.0（2022.03.02）
 
 - 校正辞書を2022年2月時点のものに更新

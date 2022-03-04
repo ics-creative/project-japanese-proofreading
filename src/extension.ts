@@ -9,7 +9,7 @@ import {
 
 let client: LanguageClient;
 
-export function activate(context: ExtensionContext) {
+export const activate = (context: ExtensionContext) => {
   const serverModule = context.asAbsolutePath(path.join("out", "server.js"));
   const debugOptions = { execArgv: ["--nolazy", "--inspect=6009"] };
   const serverOptions: ServerOptions = {
@@ -41,11 +41,11 @@ export function activate(context: ExtensionContext) {
     clientOptions,
   );
   client.start();
-}
+};
 
-export function deactivate(): Thenable<void> | undefined {
+export const deactivate = (): Thenable<void> | undefined => {
   if (!client) {
     return undefined;
   }
   return client.stop();
-}
+};

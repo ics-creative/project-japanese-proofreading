@@ -1,6 +1,6 @@
 # Change Log
 
-## 2.0.0（2022.03.04）
+## 1.1.0（2022.03.04）
 
 - japanese-proofreading.textlint.句点(。)と読点(、)オプションを無効にしても句読点のカンマ・ピリオドが指摘される [#5](https://github.com/ics-creative/project-japanese-proofreading/issues/5)
   - カンマ・ピリオド（技術用語）の指摘を削除

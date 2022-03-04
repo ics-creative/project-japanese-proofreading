@@ -2,7 +2,7 @@
   "name": "japanese-proofreading",
   "displayName": "テキスト校正くん",
   "description": "VS CodeでテキストファイルやMarkdownファイルの日本語の文章をチェックする拡張機能",
-  "version": "2.0.0",
+  "version": "1.1.0",
   "publisher": "ICS",
   "engines": {
     "vscode": "^1.64.0"

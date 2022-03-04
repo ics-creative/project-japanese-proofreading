@@ -26,8 +26,6 @@ module.exports = {
       },
     ],
     "import/no-unresolved": "off",
-    // TypeScript側のeslintで未使用のvarをエラー
-    "@typescript-eslint/no-unused-vars": 1,
   },
   ignorePatterns: ["node_modules", "out", "dist", "**/*.d.ts"],
 };

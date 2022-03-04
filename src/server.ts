@@ -1,5 +1,6 @@
-import { TextlintMessage, TextlintResult } from "@textlint/kernel";
 import * as path from "path";
+// eslint-disable-next-line import/named
+import { TextlintMessage, TextlintResult } from "@textlint/kernel";
 import { TextLintEngine } from "textlint";
 import { TextDocument } from "vscode-languageserver-textdocument";
 import {
@@ -23,7 +24,7 @@ const connection = createConnection(ProposedFeatures.all);
 // テキストドキュメントを管理するクラスを作成します。
 const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
-let hasConfigurationCapability: boolean = false;
+let hasConfigurationCapability = false;
 
 connection.onInitialize((params: InitializeParams) => {
   const capabilities = params.capabilities;
@@ -46,7 +47,7 @@ connection.onInitialized(() => {
   }
 });
 
-function getDefaultTextlintSettings() {
+const getDefaultTextlintSettings = () => {
   const mySettings: { [key: string]: boolean } = {};
 
   DEFAULT_EXTENSION_RULES.forEach((value) => {
@@ -54,7 +55,7 @@ function getDefaultTextlintSettings() {
   });
 
   return mySettings;
-}
+};
 
 const defaultSettings: ITextlintSettings = {
   maxNumberOfProblems: 1000,
@@ -79,7 +80,7 @@ connection.onDidChangeConfiguration((change) => {
 /**
  * VSCode側の設定を取得します。
  */
-function getDocumentSettings(resource: string): Thenable<ITextlintSettings> {
+const getDocumentSettings = (resource: string): Thenable<ITextlintSettings> => {
   if (!hasConfigurationCapability) {
     return Promise.resolve(globalSettings);
   }
@@ -92,7 +93,7 @@ function getDocumentSettings(resource: string): Thenable<ITextlintSettings> {
     documentSettings.set(resource, result);
   }
   return result;
-}
+};
 
 // Only keep settings for open documents
 documents.onDidClose((close) => {
@@ -111,7 +112,9 @@ const engine: TextLintEngine = new TextLintEngine({
 });
 
 // バリデーション（textlint）を実施
-async function validateTextDocument(textDocument: TextDocument): Promise<void> {
+const validateTextDocument = async (
+  textDocument: TextDocument,
+): Promise<void> => {
   // VSCode側の設定を取得
   const settings = await getDocumentSettings(textDocument.uri);
 
@@ -126,9 +129,9 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
     // エラーメッセージ一覧を取得
     const messages: TextlintMessage[] = results[0].messages;
     const l: number = messages.length;
-    for (let i: number = 0; i < l; i++) {
+    for (let i = 0; i < l; i++) {
       const message: TextlintMessage = messages[i];
-      const text: string = `${message.message}（${message.ruleId}）`;
+      const text = `${message.message}（${message.ruleId}）`;
       // 有効とされているエラーか？
       if (!isTarget(settings, message.ruleId, message.message)) {
         continue;
@@ -161,7 +164,7 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
   }
   // 診断結果をVSCodeに送信し、ユーザーインターフェースに表示します。
   connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
-}
+};
 
 /**
  * 設定で有効としているエラーかどうか判定します。
@@ -170,12 +173,12 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
  * @param message エラーメッセージ
  * @returns
  */
-function isTarget(
+const isTarget = (
   settings: ITextlintSettings,
   targetRuleId: string,
   message: string,
-): boolean {
-  let bool: boolean = false;
+): boolean => {
+  let bool = false;
   DEFAULT_EXTENSION_RULES.forEach((rule) => {
     if (targetRuleId === "prh") {
       // prhのルールの場合
@@ -195,18 +198,18 @@ function isTarget(
     }
   });
   return bool;
-}
+};
 
 /**
  * validate済みの内容を破棄します。
  * @param textDocument
  */
-async function resetTextDocument(textDocument: TextDocument): Promise<void> {
+const resetTextDocument = async (textDocument: TextDocument): Promise<void> => {
   const diagnostics: Diagnostic[] = [];
   connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
-}
+};
 
-function toDiagnosticSeverity(severity: number) {
+const toDiagnosticSeverity = (severity: number) => {
   switch (severity) {
     case 0:
       return DiagnosticSeverity.Information;
@@ -216,7 +219,7 @@ function toDiagnosticSeverity(severity: number) {
       return DiagnosticSeverity.Error;
   }
   return DiagnosticSeverity.Information;
-}
+};
 
 // Make the text document manager listen on the connection
 // for open, change and close text document events

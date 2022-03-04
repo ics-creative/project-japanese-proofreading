@@ -3,24 +3,31 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: 6,
-    sourceType: "module"
+    sourceType: "module",
   },
   extends: [
+    "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
-    "prettier"
-  ],
-  plugins: [
+    "plugin:import/errors",
     "prettier",
-    "@typescript-eslint"
   ],
+  plugins: ["prettier", "@typescript-eslint"],
   rules: {
+    "no-unused-vars": "off",
+    // TypeScript側のeslintで未使用のvarをエラー
+    "@typescript-eslint/no-unused-vars": 1,
     "sort-keys": 0,
-    "no-console": 0
+    "no-console": 0,
+    "func-style": [2, "expression", { allowArrowFunctions: true }],
+    "import/order": [
+      "error",
+      {
+        groups: ["internal", "builtin", "external", "parent"],
+      },
+    ],
+    "import/no-unresolved": "off",
+    // TypeScript側のeslintで未使用のvarをエラー
+    "@typescript-eslint/no-unused-vars": 1,
   },
-  ignorePatterns: [
-    "node_modules",
-    "out",
-    "dist",
-    "**/*.d.ts"
-  ]
-}
+  ignorePatterns: ["node_modules", "out", "dist", "**/*.d.ts"],
+};

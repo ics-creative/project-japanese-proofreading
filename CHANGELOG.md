@@ -5,7 +5,7 @@
 - japanese-proofreading.textlint.句点(。)と読点(、)オプションを無効にしても句読点のカンマ・ピリオドが指摘される [#5](https://github.com/ics-creative/project-japanese-proofreading/issues/5)
   - カンマ・ピリオド（技術用語）の指摘を削除
   - 設定画面から「和文の句読点に全角ピリオド・カンマが使用されているか」をon/offできるように
-- Latex(.tex)ファイル形式への対応
+- Latex(.tex)ファイル形式への対応 [PR:6](https://github.com/ics-creative/project-japanese-proofreading/pull/6)
 - HTML(.html)ファイル形式への対応
 
 ## 1.0.0（2022.03.02）

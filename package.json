@@ -180,7 +180,6 @@
     "watch": "tsc -watch -p ./",
     "lint": "eslint src --ext .ts",
     "format": "eslint src --ext .ts --fix",
-    "test": "npm run compile && node ./node_modules/vscode/bin/test",
     "update-dictionary": "npm uninstall textlint-rule-preset-icsmedia && npm i ics-creative/textlint-rule-preset-icsmedia",
     "vsce:package": "vsce package"
   },

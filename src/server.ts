@@ -1,7 +1,8 @@
+/* eslint-disable prettier/prettier */
 import * as path from "path";
 // eslint-disable-next-line import/named
 import { TextlintMessage, TextlintResult } from "@textlint/kernel";
-import { TextLintEngine } from "textlint";
+import { createLinter, loadTextlintrc } from "textlint";
 import { TextDocument } from "vscode-languageserver-textdocument";
 import {
   createConnection,
@@ -106,10 +107,7 @@ documents.onDidChangeContent(async (change) => {
   validateTextDocument(change.document);
 });
 
-const engine: TextLintEngine = new TextLintEngine({
-  // textlint-rule-preset-icsmediaをそのまま使用せず、ymlファイルだけ参照している
-  configFile: path.resolve(__dirname, "../.textlintrc"),
-});
+const configFilePath = path.resolve(__dirname, "../.textlintrc");
 
 // バリデーション（textlint）を実施
 const validateTextDocument = async (
@@ -119,15 +117,21 @@ const validateTextDocument = async (
   const settings = await getDocumentSettings(textDocument.uri);
 
   const document = textDocument.getText();
-  const ext: string = path.extname(URI.parse(textDocument.uri).fsPath);
+  const descriptor = await loadTextlintrc({ configFilePath });
+  const linter = createLinter({
+    descriptor,
+  });
 
-  const results: TextlintResult[] = await engine.executeOnText(document, ext);
+  const results: TextlintResult = await linter.lintText(
+    document,
+    URI.parse(textDocument.uri).fsPath,
+  );
   const diagnostics: Diagnostic[] = [];
 
   // エラーが存在する場合
-  if (engine.isErrorResults(results)) {
+  if (results.messages.length) {
     // エラーメッセージ一覧を取得
-    const messages: TextlintMessage[] = results[0].messages;
+    const messages: TextlintMessage[] = results.messages;
     const l: number = messages.length;
     for (let i = 0; i < l; i++) {
       const message: TextlintMessage = messages[i];

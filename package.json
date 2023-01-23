@@ -164,7 +164,12 @@
         "japanese-proofreading.textlint.丸かっこ（）": {
           "type": "boolean",
           "default": true,
-          "description": "有効（半角の括弧を使用していないかチェックします）"
+          "description": "有効（半角の丸かっこを使用していないかチェックします）"
+        },
+        "japanese-proofreading.textlint.大かっこ［］": {
+          "type": "boolean",
+          "default": true,
+          "description": "有効（半角の大かっこを使用していないかチェックします）"
         },
         "japanese-proofreading.textlint.ら抜き言葉": {
           "type": "boolean",

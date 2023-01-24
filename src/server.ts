@@ -120,7 +120,7 @@ const validateTextDocument = async (
   const descriptor = await loadTextlintrc({ configFilePath });
 
   // ファイルの拡張子
-  const ext: string = path.extname(URI.parse(textDocument.uri).fsPath);
+  const ext: string = path.extname(textDocument.uri);
   // サポートされている拡張子
   const targetExtension = descriptor.availableExtensions.find((i) => i === ext) ?? null;
 

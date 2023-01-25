@@ -118,10 +118,20 @@ const validateTextDocument = async (
 
   const document = textDocument.getText();
   const descriptor = await loadTextlintrc({ configFilePath });
+
+  // ファイルの拡張子
+  const ext: string = path.extname(textDocument.uri);
+  // サポートされている拡張子
+  const targetExtension = descriptor.availableExtensions.find((i) => i === ext) ?? null;
+
+  // 対応していない拡張子の場合、バリデーションを実行しない
+  if (targetExtension === null) {
+    return;
+  }
+
   const linter = createLinter({
     descriptor,
   });
-
   const results: TextlintResult = await linter.lintText(
     document,
     URI.parse(textDocument.uri).fsPath,

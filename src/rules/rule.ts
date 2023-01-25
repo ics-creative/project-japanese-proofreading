@@ -13,8 +13,43 @@ import { DefaultExtensionRuleType } from "./rule-data";
  */
 export const DEFAULT_EXTENSION_RULES: readonly DefaultExtensionRuleType[] = [
   {
+    ruleName: "読点の数",
+    ruleId: "preset-japanese/max-ten",
+    enabled: true,
+  },
+  {
+    ruleName: "接続詞の連続",
+    ruleId: "preset-japanese/no-doubled-conjunction",
+    enabled: true,
+  },
+  {
+    ruleName: "二重否定",
+    ruleId: "preset-japanese/no-double-negative-ja",
+    enabled: true,
+  },
+  {
+    ruleName: "助詞の連続",
+    ruleId: "preset-japanese/no-doubled-joshi",
+    enabled: true,
+  },
+  {
+    ruleName: "ら抜き言葉",
+    ruleId: "preset-japanese/no-dropping-the-ra",
+    enabled: true,
+  },
+  {
     ruleName: "ですます調",
     ruleId: "preset-japanese/no-mix-dearu-desumasu",
+    enabled: true,
+  },
+  {
+    ruleName: "濁点のチェック",
+    ruleId: "preset-japanese/no-nfd",
+    enabled: true,
+  },
+  {
+    ruleName: "康煕部首の検出",
+    ruleId: "preset-japanese/no-kangxi-radicals",
     enabled: true,
   },
   {
@@ -50,16 +85,6 @@ export const DEFAULT_EXTENSION_RULES: readonly DefaultExtensionRuleType[] = [
   {
     ruleName: "技術用語",
     ruleId: "prh/技術用語",
-    enabled: true,
-  },
-  {
-    ruleName: "読点の数",
-    ruleId: "preset-japanese/max-ten",
-    enabled: true,
-  },
-  {
-    ruleName: "助詞の連続",
-    ruleId: "preset-japanese/no-doubled-joshi",
     enabled: true,
   },
   {
@@ -143,11 +168,6 @@ export const DEFAULT_EXTENSION_RULES: readonly DefaultExtensionRuleType[] = [
   {
     ruleName: "大かっこ［］",
     ruleId: "preset-jtf-style/4.3.2.大かっこ［］",
-    enabled: true,
-  },
-  {
-    ruleName: "ら抜き言葉",
-    ruleId: "preset-japanese/no-dropping-the-ra",
     enabled: true,
   },
 ] as const;

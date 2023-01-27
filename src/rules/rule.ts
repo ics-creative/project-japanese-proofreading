@@ -43,7 +43,7 @@ export const DEFAULT_EXTENSION_RULES: readonly DefaultExtensionRuleType[] = [
     enabled: true,
   },
   {
-    ruleName: "濁点のチェック",
+    ruleName: "不自然な濁点のチェック",
     ruleId: "preset-japanese/no-nfd",
     enabled: true,
   },

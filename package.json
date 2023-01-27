@@ -175,6 +175,21 @@
           "type": "boolean",
           "default": true,
           "description": "有効（ら抜き言葉をチェックします）"
+        },
+        "japanese-proofreading.textlint.二重否定": {
+          "type": "boolean",
+          "default": true,
+          "description": "有効（二重否定をチェックします）"
+        },
+        "japanese-proofreading.textlint.不自然な濁点のチェック": {
+          "type": "boolean",
+          "default": true,
+          "description": "有効（「エンシ゛ン」のような不自然な濁点をチェックします）"
+        },
+        "japanese-proofreading.textlint.康煕部首の検出": {
+          "type": "boolean",
+          "default": true,
+          "description": "有効（康煕部首に含まれる漢字を使用していないかチェックします）"
         }
       }
     }

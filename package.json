@@ -181,15 +181,30 @@
           "default": true,
           "description": "有効（二重否定をチェックします）"
         },
-        "japanese-proofreading.textlint.不自然な濁点のチェック": {
+        "japanese-proofreading.textlint.不自然な濁点": {
           "type": "boolean",
           "default": true,
           "description": "有効（「エンシ゛ン」のような不自然な濁点をチェックします）"
         },
-        "japanese-proofreading.textlint.康煕部首の検出": {
+        "japanese-proofreading.textlint.康煕部首": {
           "type": "boolean",
           "default": true,
           "description": "有効（康煕部首に含まれる漢字を使用していないかチェックします）"
+        },
+        "japanese-proofreading.textlint.逆接の「が」の複数回出現": {
+          "type": "boolean",
+          "default": true,
+          "description": "有効（逆接の接続助詞「が」が、同一文中に複数回出現していないかチェックします）"
+        },
+        "japanese-proofreading.textlint.制御文字": {
+          "type": "boolean",
+          "default": true,
+          "description": "有効（制御文字を使用していないかチェックします）"
+        },
+        "japanese-proofreading.textlint.ゼロ幅スペース": {
+          "type": "boolean",
+          "default": true,
+          "description": "有効（ゼロ幅スペースを使用していないかチェックします）"
         }
       }
     }

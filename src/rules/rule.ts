@@ -18,6 +18,11 @@ export const DEFAULT_EXTENSION_RULES: readonly DefaultExtensionRuleType[] = [
     enabled: true,
   },
   {
+    ruleName: "逆接の「が」の複数回出現",
+    ruleId: "preset-japanese/no-doubled-conjunctive-particle-ga",
+    enabled: true,
+  },
+  {
     ruleName: "接続詞の連続",
     ruleId: "preset-japanese/no-doubled-conjunction",
     enabled: true,
@@ -43,12 +48,22 @@ export const DEFAULT_EXTENSION_RULES: readonly DefaultExtensionRuleType[] = [
     enabled: true,
   },
   {
-    ruleName: "不自然な濁点のチェック",
+    ruleName: "不自然な濁点",
     ruleId: "preset-japanese/no-nfd",
     enabled: true,
   },
   {
-    ruleName: "康煕部首の検出",
+    ruleName: "制御文字",
+    ruleId: "preset-japanese/no-invalid-control-character",
+    enabled: true,
+  },
+  {
+    ruleName: "ゼロ幅スペース",
+    ruleId: "preset-japanese/no-zero-width-spaces",
+    enabled: true,
+  },
+  {
+    ruleName: "康煕部首",
     ruleId: "preset-japanese/no-kangxi-radicals",
     enabled: true,
   },

@@ -64,6 +64,15 @@ githubにあるWebpackのソースコード
 ## 誤った固有名詞の使用
 ビッグカメラに寄った後、東京ビックサイトに行った
 
+## 誤った慣用表現
+取り付く暇もない
+
+---
+
+検出される間違いやすい慣用表現や誤字については[ics-creative/textlint-rule-preset-icsmedia](https://github.com/ics-creative/textlint-rule-preset-icsmedia/blob/master/dict/prh_idiom.yml)に記載されています。
+
+---
+
 ## 康煕部首に含まれる漢字が使われている
 道具を⽤いた
 

@@ -16,6 +16,11 @@ import {
   Range,
   TextDocuments,
   TextDocumentSyncKind,
+  CodeActionKind,
+  CodeAction,
+  TextDocumentEdit,
+  TextEdit,
+  CodeActionParams,
 } from "vscode-languageserver/node";
 import { URI } from "vscode-uri";
 import * as HTMLPlugin from "textlint-plugin-html";
@@ -23,9 +28,10 @@ import LatexPlugin from "textlint-plugin-latex2e";
 import ReviewPlugin from "textlint-plugin-review";
 import { DEFAULT_EXTENSION_RULES } from "./rules/rule";
 
+const APP_NAME = "テキスト校正くん";
+
 // サーバーへの接続を作成(すべての提案された機能も含む)
 const connection = createConnection(ProposedFeatures.all);
-
 // テキストドキュメントを管理するクラスを作成します。
 const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
@@ -39,6 +45,7 @@ connection.onInitialize((params: InitializeParams) => {
   return {
     capabilities: {
       textDocumentSync: TextDocumentSyncKind.Incremental,
+      codeActionProvider: true, // connection.onCodeAction を有効にする
     },
   };
 });
@@ -50,6 +57,41 @@ connection.onInitialized(() => {
       undefined,
     );
   }
+});
+
+/**
+ * コードアクションのハンドラです。
+ * クイックフィックス機能の追加を行っています。
+ */
+connection.onCodeAction((params: CodeActionParams) => {  
+  // コードアクションの種類にクイックフィックスが存在するか？
+  const isQuickFix = params.context.only?.some((kind) => kind === CodeActionKind.QuickFix) ?? false;
+
+  if (!isQuickFix) {
+    return;
+  }
+
+  // 診断結果
+  const diagnostics = params.context.diagnostics.filter(v => v.source === APP_NAME);
+
+  const textDocument = documents.get(params.textDocument.uri);  
+  if(!textDocument) {
+    return;
+  }
+  
+  const codeActions: CodeAction[] = [];
+
+  diagnostics.forEach((diagnostic: Diagnostic) => {
+    const quickFixAction = createQuickFixAction(diagnostic, textDocument)
+
+    if(!quickFixAction) {
+      return;
+    }
+
+    codeActions.push(quickFixAction);
+  })
+
+  return codeActions;
 });
 
 const getDefaultTextlintSettings = () => {
@@ -183,6 +225,7 @@ const validateTextDocument = async (
     for (let i = 0; i < l; i++) {
       const message: TextlintMessage = messages[i];
       const text = `${message.message}（${message.ruleId}）`;
+
       // 有効とされているエラーか？
       if (!isTarget(settings, message.ruleId, message.message)) {
         continue;
@@ -202,13 +245,15 @@ const validateTextDocument = async (
         Math.max(0, message.loc.end.line - 1),
         Math.max(0, message.loc.start.column - 1 + posRange),
       );
+      const canAutofixMessage = message.fix ? "🪄 " : "";
       // 診断結果を作成
       const diagnostic: Diagnostic = {
         severity: toDiagnosticSeverity(message.severity),
         range: Range.create(startPos, endPos),
-        message: text,
-        source: "テキスト校正くん",
+        message: canAutofixMessage + text,
+        source: APP_NAME,
         code: message.ruleId,
+        data: message.fix?.text,
       };
       diagnostics.push(diagnostic);
     }
@@ -271,6 +316,47 @@ const toDiagnosticSeverity = (severity: number) => {
   }
   return DiagnosticSeverity.Information;
 };
+
+/**
+ * 診断結果の自動修正が可能な場合、クイックフィックスのコードアクションを作成します。
+ * @param diagnostic 
+ * @param textDocument 
+ */
+const createQuickFixAction = (diagnostic: Diagnostic, textDocument: TextDocument) => {
+  // 診断結果の自動修正が可能か？
+  //    （自動修正が有効かどうかは、校正ルールによって異なる）
+  const canAutoFix = diagnostic.data !== undefined;
+
+  // 自動修正できない場合はコードアクションを生成しない
+  if(!canAutoFix) {
+    return;
+  }
+
+  // コードアクションを生成
+  const textEdits: TextEdit[] = [TextEdit.replace(diagnostic.range, diagnostic.data)];
+  const documentChanges = {
+    documentChanges: [
+      TextDocumentEdit.create(
+        {
+          uri: textDocument.uri,
+          version: textDocument.version
+        },
+        textEdits,
+      )
+    ],
+  };
+
+  const fixAction = CodeAction.create(
+    "エラーを自動修正する（テキスト校正くん）",
+    documentChanges,
+    CodeActionKind.QuickFix
+  );
+
+  // 作成したクイックフィックスのアクションを診断結果と紐付ける
+  fixAction.diagnostics = [diagnostic];
+
+  return fixAction;
+}
 
 // Make the text document manager listen on the connection
 // for open, change and close text document events

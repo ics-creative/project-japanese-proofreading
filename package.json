@@ -205,6 +205,11 @@
           "type": "boolean",
           "default": true,
           "description": "有効（ゼロ幅スペースを使用していないかチェックします）"
+        },
+        "japanese-proofreading.textlint.助詞の区切り": {
+          "type": "string",
+          "default": ["、", "。", "?", "!", "？", "！", "「",  "」", "“", "”"],
+          "description": "文の区切り文字の配列です。これらの文字があると助詞の連続のカウントをリセットします"
         }
       }
     }

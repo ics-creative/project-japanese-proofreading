@@ -122,16 +122,47 @@ const validateTextDocument = async (
   // ファイルの拡張子
   const ext: string = path.extname(textDocument.uri);
   // サポートされている拡張子
-  const targetExtension = descriptor.availableExtensions.find((i) => i === ext) ?? null;
+  const targetExtension =
+    descriptor.availableExtensions.find((i) => i === ext) ?? null;
 
   // 対応していない拡張子の場合、バリデーションを実行しない
   if (targetExtension === null) {
     return;
   }
+  // console.log(settings.textlint["助詞の区切り"]);
+  const joshiSeparator = settings.textlint[
+    "助詞の区切り"
+  ] as unknown as string[];
+  // descriptor.shallowMerge()
 
-  const linter = createLinter({
-    descriptor,
+  const joshiRule = descriptor.rule.allDescriptors.find(
+    (i) => i.id === "japanese/no-doubled-joshi",
+  );
+  const newJosjiRule = {
+    ...joshiRule,
+    ...{ options: { separatorCharacters: [...joshiSeparator] } },
+  };
+  console.log(joshiRule?.id,joshiRule?.rawOptions);
+  const newd = descriptor.shallowMerge({
+    rules: [
+      {
+        ruleId: joshiRule!.id,
+        rule: joshiRule!.rule,
+        options: {
+          min_interval: 1,
+          strict: false,
+          allow: ["も", "や", "か"],
+          separatorCharacters: [...joshiSeparator],
+        },
+      },
+    ],
   });
+  const linter = createLinter({
+    descriptor:newd,
+  });
+  console.log(newd.rule.allDescriptors.find(
+    (i) => i.id === "japanese/no-doubled-joshi",
+  )?.rawOptions)
   const results: TextlintResult = await linter.lintText(
     document,
     URI.parse(textDocument.uri).fsPath,

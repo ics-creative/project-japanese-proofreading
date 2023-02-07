@@ -34,9 +34,9 @@ VS Code上でテキストファイル・Markdownファイル・Re:VIEWファイ�
 
 問題パネルには、指摘内容と該当箇所（何行目の何文字目で発生しているか）の情報が表示されます。指摘内容をダブルクリックすることで該当箇所へカーソルを移動できるため、そのまま修正が可能です。リアルタイムでチェックを行っているため、該当箇所の修正を行うと、エラーが消えます。
 
-指摘される例文を次のリンクにまとめていますので、校正ルールの確認にご利用ください。
+指摘される例文を次のリンクにまとめていますので、コピーして校正ルールの確認にご利用ください。
 
-* [GitHub - project-japanese-proofreading/EXAMPLES.md](https://github.com/ics-creative/project-japanese-proofreading/blob/master/EXAMPLES.md)
+* [GitHub - project-japanese-proofreading/EXAMPLES.md](https://github.com/ics-creative/project-japanese-proofreading/blob/master/EXAMPLES.md?plain=1)
 
 ## 校正ルールの変更方法
 

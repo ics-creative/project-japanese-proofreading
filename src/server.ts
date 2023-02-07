@@ -154,16 +154,16 @@ const validateTextDocument = async (
       // 文字数が存在しない場合の値は0になります。
       const posRange = message.fix?.range
         ? message.fix.range[1] - message.fix.range[0]
-        : 0;
+        : 1;
       // エラーの開始位置を取得します。
       const startPos: Position = Position.create(
-        Math.max(0, message.line - 1),
-        Math.max(0, message.column - 1),
+        Math.max(0, message.loc.start.line - 1),
+        Math.max(0, message.loc.start.column - 1),
       );
       // エラーの終了位置を取得します。
       const endPos: Position = Position.create(
-        Math.max(0, message.line - 1),
-        Math.max(0, message.column - 1 + posRange),
+        Math.max(0, message.loc.end.line - 1),
+        Math.max(0, message.loc.start.column - 1 + posRange),
       );
       // 診断結果を作成
       const diagnostic: Diagnostic = {

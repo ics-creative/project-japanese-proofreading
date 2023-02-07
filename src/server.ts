@@ -151,7 +151,7 @@ const validateTextDocument = async (
         continue;
       }
       // エラーの文字数を取得します。
-      // 文字数が存在しない場合の値は0になります。
+      // 文字数が存在しない場合の値は1になります。
       const posRange = message.fix?.range
         ? message.fix.range[1] - message.fix.range[0]
         : 1;

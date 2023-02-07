@@ -3,8 +3,8 @@
 ## 1.2.0（2023.02.07）
 
 - 入力例のドキュメントを作成 [#22](https://github.com/ics-creative/project-japanese-proofreading/issues/22)
-- "jft-style/4.3.2.大かっこ「」" をGUI上で無効にできない [#24](https://github.com/ics-creative/project-japanese-proofreading/issues/24)
-- 拡張子がないファイルでクラッシュする [#26](https://github.com/ics-creative/project-japanese-proofreading/issues/26)
+- 半角の大かっこの使用を許容する設定項目を追加 [#24](https://github.com/ics-creative/project-japanese-proofreading/issues/24)
+- 拡張子がないファイルでクラッシュする不具合を修正 [#26](https://github.com/ics-creative/project-japanese-proofreading/issues/26)
 
 ## 1.1.0（2022.03.04）
 

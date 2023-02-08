@@ -5,7 +5,7 @@
 これは素敵です。あれは平凡である。
 
 ---
-補足：ですます調の検出には[textlint-rule-no-mix-dearu-desumasu](https://github.com/textlint-ja/textlint-rule-no-mix-dearu-desumasu)を利用しています。誤検知防止のため「である調」の判定は明らかに常体な「〜である」のみとなっています。
+補足：ですます調の検出には[textlint-rule-no-mix-dearu-desumasu](https://github.com/textlint-ja/textlint-rule-no-mix-dearu-desumasu)を利用しています。誤検出の回避のため「である調」の判定は明らかに常体な「〜である」のみとなっています。
 以下のような例は検出できません。
 
 「これは素敵です。あれは平凡だ。」
@@ -128,6 +128,3 @@ githubにあるWebpackのソースコード
 
 ## 不自然な濁点の使用
 エンシ゛ンの不調
-
-これはサンプルです。
-

@@ -4,6 +4,7 @@ import * as path from "path";
 import { TextlintMessage, TextlintResult } from "@textlint/kernel";
 import { createLinter, loadTextlintrc } from "textlint";
 import { TextDocument } from "vscode-languageserver-textdocument";
+import { configPath } from "textlint-rule-preset-icsmedia";
 import {
   createConnection,
   Diagnostic,
@@ -107,8 +108,6 @@ documents.onDidChangeContent(async (change) => {
   validateTextDocument(change.document);
 });
 
-const configFilePath = require.resolve("textlint-rule-preset-icsmedia/textlintrc");
-
 // バリデーション（textlint）を実施
 const validateTextDocument = async (
   textDocument: TextDocument,
@@ -117,12 +116,13 @@ const validateTextDocument = async (
   const settings = await getDocumentSettings(textDocument.uri);
 
   const document = textDocument.getText();
-  const descriptor = await loadTextlintrc({ configFilePath });
+  const descriptor = await loadTextlintrc({ configFilePath: configPath });
 
   // ファイルの拡張子
   const ext: string = path.extname(textDocument.uri);
   // サポートされている拡張子
-  const targetExtension = descriptor.availableExtensions.find((i) => i === ext) ?? null;
+  const targetExtension =
+    descriptor.availableExtensions.find((i) => i === ext) ?? null;
 
   // 対応していない拡張子の場合、バリデーションを実行しない
   if (targetExtension === null) {

@@ -107,7 +107,7 @@ documents.onDidChangeContent(async (change) => {
   validateTextDocument(change.document);
 });
 
-const configFilePath = path.resolve(__dirname, "../.textlintrc");
+const configFilePath = require.resolve("textlint-rule-preset-icsmedia/textlintrc");
 
 // バリデーション（textlint）を実施
 const validateTextDocument = async (

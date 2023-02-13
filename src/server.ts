@@ -121,8 +121,7 @@ const validateTextDocument = async (
   // ファイルの拡張子
   const ext: string = path.extname(textDocument.uri);
   // サポートされている拡張子
-  const targetExtension =
-    descriptor.availableExtensions.find((i) => i === ext) ?? null;
+  const targetExtension = descriptor.availableExtensions.find((i) => i === ext) ?? null;
 
   // 対応していない拡張子の場合、バリデーションを実行しない
   if (targetExtension === null) {

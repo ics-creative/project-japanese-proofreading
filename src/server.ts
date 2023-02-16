@@ -334,12 +334,8 @@ const toDiagnosticSeverity = (severity: number) => {
  * @param textDocument 
  */
 const createQuickFixAction = (diagnostic: Diagnostic, textDocument: TextDocument) => {
-  // 診断結果の自動修正が可能か？
-  //    （自動修正が有効かどうかは、校正ルールによって異なる）
-  const canAutoFix = diagnostic.data !== undefined;
-
   // 自動修正できない場合はコードアクションを生成しない
-  if(!canAutoFix) {
+  if(!diagnostic.data) {
     return;
   }
 

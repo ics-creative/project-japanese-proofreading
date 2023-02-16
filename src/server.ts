@@ -230,20 +230,31 @@ const validateTextDocument = async (
       if (!isTarget(settings, message.ruleId, message.message)) {
         continue;
       }
+
+      // エラー範囲の開始位置のズレ
+      let startCharacterDiff = 0;
+
+      // エラーのルールが「不自然な濁点」か？
+      const isRuleNoNfd = message.ruleId === "japanese/no-nfd";
+      if(isRuleNoNfd) {
+        // ルール「不自然な濁点」は、修正テキストを1文字ずらして生成していると思われるため、エラー開始位置も1文字ずらしたい
+        startCharacterDiff = -1;
+      }
+
       // エラーの文字数を取得します。
       // 文字数が存在しない場合の値は1になります。
       const posRange = message.fix?.range
         ? message.fix.range[1] - message.fix.range[0]
         : 1;
       // エラーの開始位置を取得します。
-      const startPos: Position = Position.create(
+      const startPos = Position.create(
         Math.max(0, message.loc.start.line - 1),
-        Math.max(0, message.loc.start.column - 1),
+        Math.max(0, message.loc.start.column - 1 + startCharacterDiff),
       );
       // エラーの終了位置を取得します。
-      const endPos: Position = Position.create(
+      const endPos = Position.create(
         Math.max(0, message.loc.end.line - 1),
-        Math.max(0, message.loc.start.column - 1 + posRange),
+        Math.max(0, message.loc.start.column - 1 + startCharacterDiff + posRange),
       );
       const canAutofixMessage = message.fix ? "🪄 " : "";
       // 診断結果を作成

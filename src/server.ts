@@ -18,6 +18,9 @@ import {
   TextDocumentSyncKind,
 } from "vscode-languageserver/node";
 import { URI } from "vscode-uri";
+import * as HTMLPlugin from "textlint-plugin-html";
+import LatexPlugin from "textlint-plugin-latex2e";
+import ReviewPlugin from "textlint-plugin-review";
 import { DEFAULT_EXTENSION_RULES } from "./rules/rule";
 
 // サーバーへの接続を作成(すべての提案された機能も含む)
@@ -116,7 +119,42 @@ const validateTextDocument = async (
   const settings = await getDocumentSettings(textDocument.uri);
 
   const document = textDocument.getText();
-  const descriptor = await loadTextlintrc({ configFilePath: configPath });
+
+  // ICS MEDIAのルールのtextlintの設定ファイルを読み込み
+  const defaultDescriptor = await loadTextlintrc({
+    configFilePath: configPath,
+  });
+
+  // デフォルトのプラグイン設定を取得。テキスト・マークダウン用のプラグインなどが入っている想定
+  const defalutPluginSettings = defaultDescriptor.toKernelOptions().plugins;
+
+  // 追加のプラグイン設定
+  const extendPlugins = [
+    {
+      pluginId: "@textlint/textlint-plugin-html",
+      plugin: HTMLPlugin,
+    },
+    {
+      pluginId: "@textlint/textlint-plugin-latex2e",
+      plugin: LatexPlugin,
+    },
+    {
+      pluginId: "@textlint/textlint-plugin-review",
+      plugin: ReviewPlugin,
+    },
+  ];
+
+  let descriptor;
+
+  if (defalutPluginSettings) {
+    descriptor = defaultDescriptor.shallowMerge({
+      plugins: [...defalutPluginSettings, ...extendPlugins],
+    });
+  } else {
+    descriptor = defaultDescriptor.shallowMerge({
+      plugins: [...extendPlugins],
+    });
+  }
 
   // ファイルの拡張子
   const ext: string = path.extname(textDocument.uri);

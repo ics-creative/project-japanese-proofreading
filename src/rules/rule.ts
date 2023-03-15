@@ -8,7 +8,7 @@ import { DefaultExtensionRuleType } from "./rule-data";
  *
  * ルールに関して、同じルールがある場合、「拡張機能のデフォルトルール」より「VSCodeのユーザー設定ルール」が優先されます。
  *
- * 「ICS MEDIA校正ルール」のルールは、テキスト校正くんで利用しておらず、辞書のみを利用しています。
+
  * 「ICS MEDIA校正ルール」の辞書は、「拡張機能のデフォルトルール」内に組み込まれています。
  */
 export const DEFAULT_EXTENSION_RULES: readonly DefaultExtensionRuleType[] = [

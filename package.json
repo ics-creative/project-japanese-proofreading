@@ -98,7 +98,7 @@
         },
         "japanese-proofreading.textlint.助詞の連続": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "description": "有効（同じ助詞を連続して使用していないかチェックします）"
         },
         "japanese-proofreading.textlint.ピリオドとカンマの使用（半角）": {

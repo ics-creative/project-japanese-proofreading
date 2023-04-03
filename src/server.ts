@@ -63,31 +63,24 @@ connection.onInitialized(() => {
  * コードアクションのハンドラです。
  * クイックフィックス機能の追加を行っています。
  */
-connection.onCodeAction((params: CodeActionParams) => {  
+connection.onCodeAction((params: CodeActionParams) => {
+  const textDocument = documents.get(params.textDocument.uri);
   // コードアクションの種類にクイックフィックスが存在するか？
   const isQuickFix = params.context.only?.some((kind) => kind === CodeActionKind.QuickFix) ?? false;
-
-  if (!isQuickFix) {
+  if (!textDocument || !isQuickFix) {
     return;
   }
 
   // 診断結果
   const diagnostics = params.context.diagnostics.filter(v => v.source === APP_NAME);
-
-  const textDocument = documents.get(params.textDocument.uri);  
-  if(!textDocument) {
-    return;
-  }
-  
   const codeActions: CodeAction[] = [];
 
+  // クイックフィックスの追加
   diagnostics.forEach((diagnostic: Diagnostic) => {
     const quickFixAction = createQuickFixAction(diagnostic, textDocument)
-
     if(!quickFixAction) {
       return;
     }
-
     codeActions.push(quickFixAction);
   })
 

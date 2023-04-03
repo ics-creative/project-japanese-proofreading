@@ -66,25 +66,18 @@ connection.onInitialized(() => {
 connection.onCodeAction((params: CodeActionParams) => {
   const textDocument = documents.get(params.textDocument.uri);
   // コードアクションの種類にクイックフィックスが存在するか？
-  const isQuickFix = params.context.only?.some((kind) => kind === CodeActionKind.QuickFix) ?? false;
-  if (!textDocument || !isQuickFix) {
+  const hasQuickFix = params.context.only?.some((kind) => kind === CodeActionKind.QuickFix) ?? false;
+  if (!textDocument || !hasQuickFix) {
     return;
   }
 
-  // 診断結果
+  // この拡張機能の診断結果を取得
   const diagnostics = params.context.diagnostics.filter(v => v.source === APP_NAME);
-  const codeActions: CodeAction[] = [];
-
-  // クイックフィックスの追加
-  diagnostics.forEach((diagnostic: Diagnostic) => {
-    const quickFixAction = createQuickFixAction(diagnostic, textDocument)
-    if(!quickFixAction) {
-      return;
-    }
-    codeActions.push(quickFixAction);
-  })
-
-  return codeActions;
+  // 修正可能な診断結果は、クイックフィックスを追加
+  const quickFixActions = diagnostics.filter(v => v.data !== undefined).map((diagnostic) => {
+    return createQuickFixAction(diagnostic, textDocument);
+  });
+  return quickFixActions;
 });
 
 const getDefaultTextlintSettings = () => {
@@ -327,12 +320,6 @@ const toDiagnosticSeverity = (severity: number) => {
  * @param textDocument
  */
 const createQuickFixAction = (diagnostic: Diagnostic, textDocument: TextDocument) => {
-  // 自動修正できない場合はコードアクションを生成しない
-  if(diagnostic.data === undefined) {
-    return;
-  }
-
-  // コードアクションを生成
   const textEdits: TextEdit[] = [TextEdit.replace(diagnostic.range, diagnostic.data)];
   const documentChanges = {
     documentChanges: [

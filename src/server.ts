@@ -354,7 +354,7 @@ const createQuickFixAction = (diagnostic: Diagnostic, textDocument: TextDocument
   };
 
   const fixAction = CodeAction.create(
-    "エラーを自動修正する（テキスト校正くん）",
+    "問題を自動修正する（テキスト校正くん）",
     documentChanges,
     CodeActionKind.QuickFix
   );

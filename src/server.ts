@@ -323,12 +323,12 @@ const toDiagnosticSeverity = (severity: number) => {
 
 /**
  * 診断結果の自動修正が可能な場合、クイックフィックスのコードアクションを作成します。
- * @param diagnostic 
- * @param textDocument 
+ * @param diagnostic
+ * @param textDocument
  */
 const createQuickFixAction = (diagnostic: Diagnostic, textDocument: TextDocument) => {
   // 自動修正できない場合はコードアクションを生成しない
-  if(!diagnostic.data) {
+  if(diagnostic.data === undefined) {
     return;
   }
 
